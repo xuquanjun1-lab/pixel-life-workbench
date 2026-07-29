@@ -3,6 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#78ae63" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="日常小镇" />
+  <meta name="description" content="像素风个人生活工作台：待办、记账、习惯、学习、健康、复盘与小橘 Agent。" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-180.png" />
   <title>日常小镇 · 像素生活工作台</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -655,6 +662,33 @@
         setVoiceState('error','当前浏览器不支持语音转文字');
         voiceButton.addEventListener('click',()=>addMessage('请使用最新版 Chrome 或 Edge 打开此页面并允许麦克风；文字聊天和语音朗读仍可使用。'));
       }
+    })();
+  </script>
+  <script>
+    (()=>{
+      if('serviceWorker' in navigator){
+        window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+      }
+      let installPrompt=null;
+      const button=document.createElement('button');
+      button.type='button';
+      button.textContent='📱 安装到手机';
+      button.setAttribute('aria-label','将日常小镇安装到手机');
+      Object.assign(button.style,{position:'fixed',left:'18px',bottom:'18px',zIndex:'70',display:'none',border:'3px solid #72513a',borderRadius:'9px',background:'#f6c656',color:'#5a3f2c',padding:'10px 13px',fontWeight:'700',boxShadow:'4px 4px 0 #6f4a35',cursor:'pointer'});
+      document.body.appendChild(button);
+      window.addEventListener('beforeinstallprompt',event=>{
+        event.preventDefault();
+        installPrompt=event;
+        button.style.display='block';
+      });
+      button.addEventListener('click',async()=>{
+        if(!installPrompt)return;
+        await installPrompt.prompt();
+        await installPrompt.userChoice;
+        installPrompt=null;
+        button.style.display='none';
+      });
+      window.addEventListener('appinstalled',()=>{button.style.display='none'});
     })();
   </script>
 </body>

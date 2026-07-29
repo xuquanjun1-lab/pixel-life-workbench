@@ -1,0 +1,18 @@
+{
+  "name": "日常小镇 · 个人生活工作台",
+  "short_name": "日常小镇",
+  "description": "管理待办、记账、习惯、学习、健康和每日复盘的像素风生活工作台。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff3d0",
+  "theme_color": "#78ae63",
+  "prefer_related_applications": false,
+  "icons": [
+    {"src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
