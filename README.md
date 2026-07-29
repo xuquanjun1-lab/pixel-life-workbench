@@ -37,3 +37,16 @@ http://localhost:4175/
 
 数据保存在浏览器 `localStorage` 中。首次使用语音输入时，需要允许浏览器访问麦克风，推荐使用最新版 Chrome 或 Edge。
 
+## 页面预览
+
+### 桌面端首页
+
+![桌面端首页](screenshots/desktop-home.png)
+
+### 植物成长与语音助手
+
+![植物成长与语音助手](screenshots/plant-agent.png)
+
+### 手机端抽屉导航
+
+![手机端抽屉导航](screenshots/mobile-home.png)
