@@ -65,6 +65,11 @@
     @keyframes plantGrow{0%{transform:scale(.82)}55%{transform:scale(1.08)}100%{transform:scale(1)}}@keyframes plantWiggle{35%{transform:rotate(-5deg)}70%{transform:rotate(5deg)}}@keyframes dropFly{to{transform:translate(var(--drop-x),var(--drop-y)) scale(.65);opacity:.2}}@keyframes waterText{to{transform:translateY(-45px);opacity:0}}@keyframes voicePulseDot{50%{box-shadow:0 0 0 5px rgba(239,127,115,.25)}}@keyframes voiceBar{to{height:17px}}
     @media(max-width:780px){.plant-grid{grid-template-columns:1fr}.profile-stats{grid-template-columns:1fr}.plant-bed{min-height:132px}.profile-hero{grid-template-columns:68px 1fr}.profile-avatar{width:62px;height:62px;font-size:31px}}
   </style>
+  <style>
+    .reward-journey{grid-column:1/-1;background:linear-gradient(135deg,#fff0bb,#f7d889);position:relative;overflow:hidden}.reward-journey:after{content:"✦";position:absolute;right:18px;top:8px;font:50px "Pixelify Sans";color:rgba(255,255,255,.45);animation:rewardTwinkle 1.8s ease-in-out infinite}.reward-top{display:flex;align-items:center;justify-content:space-between;gap:14px}.reward-title{display:flex;align-items:center;gap:10px}.reward-title span{font-size:32px}.reward-title b{font:700 21px "Pixelify Sans";display:block}.reward-title small{color:#8b674e}.reward-wallet{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.reward-pill{border:3px solid var(--line);background:#fff8df;border-radius:9px;padding:7px 9px;font:700 13px "Pixelify Sans";box-shadow:3px 3px 0 #c69055}.adventure-track{height:24px;border:4px solid var(--line);background:#fff8df;border-radius:12px;overflow:hidden;margin:16px 0 10px;position:relative}.adventure-track i{display:block;height:100%;background:repeating-linear-gradient(90deg,#75ad60 0 18px,#8bc875 18px 36px);transition:width .65s cubic-bezier(.2,.85,.25,1)}.adventure-track.pulse{animation:barPulse .55s}.milestones{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.milestone{border:3px solid var(--line);background:#ffe9ad;border-radius:9px;padding:8px;text-align:center;opacity:.62;transition:.25s}.milestone.unlocked{opacity:1;background:#dff0b8;transform:translateY(-2px);box-shadow:3px 3px 0 #a3bd74}.milestone span{font-size:24px;display:block}.milestone b{font:700 12px "Pixelify Sans";display:block}.milestone small{font-size:10px}.reward-pop{position:fixed;z-index:95;pointer-events:none;background:#fff0bd;border:4px solid var(--line);box-shadow:5px 5px 0 var(--shadow);border-radius:10px;padding:10px 13px;font:700 15px "Pixelify Sans";animation:rewardPop 1.25s ease-out forwards}.reward-coin{position:fixed;z-index:94;pointer-events:none;font-size:23px;animation:coinFly .9s cubic-bezier(.2,.8,.2,1) forwards}.live-toolbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#cde8d1;border:3px solid var(--line);box-shadow:4px 4px 0 #98b27d;border-radius:10px;padding:12px}.live-state{display:flex;align-items:center;gap:8px;font-size:12px}.live-dot{width:11px;height:11px;border:2px solid var(--line);border-radius:50%;background:#68b65c;animation:livePulse 1.4s infinite}.live-state.loading .live-dot{background:#f6c656}.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}.compact-button{border:3px solid var(--line);background:#fff0c1;color:var(--ink);border-radius:8px;padding:7px 10px;cursor:pointer;font:700 13px "Pixelify Sans";box-shadow:3px 3px 0 #a9744f}.compact-button:hover{transform:translateY(-2px)}.compact-button.primary{background:#d87f5f;color:#fff7e6}.compact-button:disabled{opacity:.55;cursor:wait}.english-search{display:grid;grid-template-columns:1fr auto;gap:8px;flex:1;max-width:430px}.english-search input{min-width:0;border:3px solid var(--line);background:#fffaf0;border-radius:8px;padding:9px 11px;color:var(--ink);font:14px "Noto Sans SC"}.phrase-card{grid-column:1/-1;background:linear-gradient(135deg,#dcefb8,#bce1a2);border:4px solid var(--line);box-shadow:5px 5px 0 #9bba73;border-radius:12px;padding:17px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}.phrase-icon{font-size:37px}.phrase-copy b{font:700 22px "Pixelify Sans";display:block}.phrase-copy p{margin:5px 0 2px;font-size:14px}.phrase-copy small{color:#6e654b}.phrase-actions{display:flex;gap:7px}.word-card{align-items:flex-start;position:relative}.word-card .record-icon{background:#f7d889}.word-card h3{font:700 22px "Pixelify Sans";margin:0}.word-card .phonetic{font-size:12px;color:#9b6a4d}.word-card .definition{margin:7px 0 4px;font-size:12px;line-height:1.55}.word-card .example{font-size:12px;color:#6f7658;background:#edf5cf;border-left:4px solid #82b665;padding:7px 9px;margin-top:8px}.word-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.course-section{grid-column:1/-1;margin-top:6px}.course-section h2{font:700 24px "Pixelify Sans";margin:0 0 10px}.course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.course-card{display:block;text-decoration:none;color:var(--ink);border:3px solid var(--line);background:#ffe9ad;border-radius:10px;padding:14px;box-shadow:4px 4px 0 #d3a165;transition:.18s}.course-card:hover{transform:translateY(-3px);box-shadow:6px 7px 0 #c3935b}.course-card b{display:block;font:700 18px "Pixelify Sans"}.course-card span{display:inline-block;margin:5px 0;font-size:11px;background:#dff0b8;border:2px solid var(--line);padding:2px 6px;border-radius:5px}.course-card p{font-size:12px;margin:4px 0;line-height:1.55}.loading-card{grid-column:1/-1;text-align:center;padding:38px;border:3px dashed #b48b66;background:#fff8e6;border-radius:10px}.loading-card span{display:inline-block;font-size:34px;animation:loadingBob .8s ease-in-out infinite alternate}.status-note{grid-column:1/-1;font-size:11px;color:#84654d;text-align:right}.news-card.live-news .record-icon{animation:satelliteBob 2.2s ease-in-out infinite}.news-card .item-actions{align-self:center}
+    @keyframes rewardPop{0%{opacity:0;transform:translateY(10px) scale(.85)}20%{opacity:1;transform:translateY(-8px) scale(1.06)}75%{opacity:1}100%{opacity:0;transform:translateY(-64px) scale(.95)}}@keyframes coinFly{to{transform:translate(var(--coin-x),var(--coin-y)) rotate(300deg) scale(.55);opacity:0}}@keyframes rewardTwinkle{50%{transform:scale(1.16) rotate(8deg);opacity:.7}}@keyframes barPulse{50%{transform:scaleY(1.18)}}@keyframes livePulse{50%{box-shadow:0 0 0 6px rgba(104,182,92,.2)}}@keyframes loadingBob{to{transform:translateY(-8px)}}@keyframes satelliteBob{50%{transform:translateY(-4px) rotate(6deg)}}
+    @media(max-width:780px){.reward-top,.live-toolbar{align-items:flex-start;flex-direction:column}.reward-wallet{justify-content:flex-start}.milestones{grid-template-columns:repeat(2,1fr)}.phrase-card{grid-template-columns:auto 1fr}.phrase-actions{grid-column:1/-1}.course-grid{grid-template-columns:1fr}.english-search{width:100%;max-width:none}.toolbar-actions{width:100%}.toolbar-actions .compact-button{flex:1}.item-actions{opacity:1}}
+  </style>
 </head>
 <body>
   <main class="game">
@@ -112,6 +117,7 @@
     </form>
   </div>
   <div class="toast" id="toast">任务完成！获得 5 点元气 ✦</div>
+  <script src="./live-content-skill.js"></script>
   <script>
     const toast=document.querySelector('#toast');
     function showToast(message){toast.textContent=message;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}
@@ -129,6 +135,8 @@
         habits:[{title:'喝水',icon:'💧',done:true},{title:'阅读',icon:'📚',done:true},{title:'运动',icon:'🏃',done:true},{title:'早睡',icon:'🌙',done:false}],
         profile:{name:'小镇居民',title:'生活探索者',motto:'慢慢来，也是一种厉害。',level:6,xp:680,streak:7},
         waterCount:1,
+        rewards:{coins:24,todayXp:0,combo:0,dayKey:'',ledger:{},milestones:[]},
+        live:{newsUpdatedAt:0,englishUpdatedAt:0,englishOffset:0,englishWords:[],englishPhraseDay:'',englishPhraseDone:false},
         modules:{
           2:[
             {title:'工资 +8,000 元',meta:'收入 · 工资 · 本月',amount:8000},
@@ -170,15 +178,27 @@
         }
       };
       const savedState=JSON.parse(localStorage.getItem(storageKey)||'null');
-      let state=savedState?{...defaults,...savedState,profile:{...defaults.profile,...(savedState.profile||{})},modules:{...defaults.modules,...(savedState.modules||{})}}:JSON.parse(JSON.stringify(defaults));
+      let state=savedState?{...defaults,...savedState,profile:{...defaults.profile,...(savedState.profile||{})},rewards:{...defaults.rewards,...(savedState.rewards||{})},live:{...defaults.live,...(savedState.live||{})},modules:{...defaults.modules,...(savedState.modules||{})}}:JSON.parse(JSON.stringify(defaults));
+      const liveSkill=window.DailyTownLiveSkill;
+      const todayKey=liveSkill.dayKey();
+      if(state.rewards.dayKey!==todayKey)state.rewards={...state.rewards,dayKey:todayKey,todayXp:0,combo:0,ledger:{},milestones:[]};
+      if(state.live.englishPhraseDay!==todayKey){state.live.englishPhraseDay=todayKey;state.live.englishPhraseDone=false}
+      const makeId=(prefix,item,index)=>item.id||`${prefix}-${index}-${Math.abs([...item.title].reduce((total,character)=>((total<<5)-total+character.charCodeAt(0))|0,0))}`;
+      state.tasks.forEach((item,index)=>item.id=makeId('task',item,index));
+      state.habits.forEach((item,index)=>item.id=makeId('habit',item,index));
+      Object.entries(state.modules).forEach(([key,items])=>items.forEach((item,index)=>item.id=makeId(`module-${key}`,item,index)));
       if(!Number.isFinite(state.waterCount))state.waterCount=state.tasks.filter(item=>item.done).length;
       state.tasks.forEach(item=>{if(item.done&&item.watered===undefined)item.watered=true});
+      state.tasks.filter(item=>item.done).forEach(item=>state.rewards.ledger[`task:${item.id}:${todayKey}`]=true);
+      state.habits.filter(item=>item.done).forEach(item=>state.rewards.ledger[`habit:${item.id}:${todayKey}`]=true);
       Object.entries(defaults.modules).forEach(([key,seeds])=>{
         const current=state.modules[key]||[];
         if(current.length<2)state.modules[key]=[...current,...seeds.filter(seed=>!current.some(item=>item.title===seed.title))];
       });
       let activeModule=0;
       let editingIndex=-1;
+      let liveLoading={news:false,english:false};
+      let liveError={news:'',english:''};
       const nav=[...document.querySelectorAll('.nav button')];
       const content=document.querySelector('.content');
       const todayHTML=content.innerHTML;
@@ -194,23 +214,75 @@
         null,
         {title:'今日待办',icon:'📜',empty:'今天还没有任务，先种下一颗小目标吧。',action:'+ 新任务',tip:'建议每天只保留 3 件最重要的任务，并给任务设置上午、下午或晚上的执行场景。'},
         {title:'收支记账',icon:'🪙',empty:'还没有收支记录。',action:'+ 记一笔',tip:'建议增加月度预算、分类占比与连续记账奖励，让记账更有反馈感。'},
-        {title:'每日 AI 新闻',icon:'✨',empty:'收藏值得阅读的 AI 新闻。',action:'+ 收藏新闻',tip:'内容来自官方渠道，建议每天只精读 1 条，并写下一句“这和我有什么关系”。'},
+        {title:'每日 AI 新闻',icon:'✨',empty:'正在等待实时 AI 新闻。',action:'+ 收藏新闻',tip:'页面每 30 分钟自动抓取一次最新 AI 动态。建议每天只精读 1 条，并写下一句“这和我有什么关系”。'},
         {title:'习惯打卡',icon:'🌱',empty:'创建你的第一个习惯。',action:'+ 新习惯',tip:'习惯最好从小到不可能失败开始，例如阅读 5 分钟，而不是“每天读完一本书”。'},
         {title:'灵感记录',icon:'💡',empty:'灵感会像萤火虫一样突然出现。',action:'+ 记灵感',tip:'建议给灵感增加标签和“下一步动作”，避免灵感只停留在收藏。'},
         {title:'学习计划',icon:'📚',empty:'安排一个轻松可完成的学习计划。',action:'+ 新计划',tip:'每次学习后写一句输出，用“学习—练习—复述”形成闭环。'},
-        {title:'英语练习',icon:'🔤',empty:'记录今天学到的单词或句子。',action:'+ 新练习',tip:'单词要放进真实句子里，并在 1、3、7 天后复习。'},
+        {title:'英语练习',icon:'🔤',empty:'正在准备今天的单词、句子和课程。',action:'+ 新练习',tip:'在线词典会实时补充音标、释义、例句和发音；单词完成后在 1、3、7 天复习。'},
         {title:'体重记录',icon:'⚖️',empty:'记录体重，观察长期趋势。',action:'+ 记体重',tip:'关注 7 日移动平均，而不是单日波动；固定在晨起同一时间记录。'},
         {title:'每日复盘',icon:'📖',empty:'今天发生了什么值得记住？',action:'+ 写复盘',tip:'用“做得好、可改进、明日最重要”三问完成 3 分钟复盘。'}
       ];
       function save(){localStorage.setItem(storageKey,JSON.stringify(state))}
       function safe(value){const node=document.createElement('div');node.textContent=value;return node.innerHTML}
+      function safeUrl(value){try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.toString():'#'}catch{return '#'}}
       function toastMessage(message){window.showToast?window.showToast(message):(document.querySelector('#toast').textContent=message)}
       function burst(target){const rect=target.getBoundingClientRect();['✦','◆','●','✧','■','★'].forEach((shape,index)=>{const bit=document.createElement('i');bit.className='confetti';bit.textContent=shape;bit.style.left=`${rect.left+rect.width/2}px`;bit.style.top=`${rect.top+rect.height/2}px`;bit.style.color=['#f6c656','#86bd65','#ef9b91','#a9dceb'][index%4];bit.style.setProperty('--x',`${(index-2.5)*22}px`);document.body.appendChild(bit);setTimeout(()=>bit.remove(),950)})}
+      function animateReward(sourceRect,xp,coins,label){
+        const origin=sourceRect||{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
+        const wallet=document.querySelector('#profileTrigger')?.getBoundingClientRect()||{left:24,top:24};
+        const pop=document.createElement('span');
+        pop.className='reward-pop';
+        pop.textContent=`+${xp} XP · +${coins} 🪙 ${label}`;
+        pop.style.left=`${Math.min(innerWidth-260,Math.max(10,origin.left))}px`;
+        pop.style.top=`${Math.max(12,origin.top-6)}px`;
+        document.body.appendChild(pop);
+        for(let index=0;index<3;index++){
+          const coin=document.createElement('span');
+          coin.className='reward-coin';
+          coin.textContent=index===2?'✦':'🪙';
+          coin.style.left=`${origin.left+origin.width/2+index*7}px`;
+          coin.style.top=`${origin.top+origin.height/2}px`;
+          coin.style.setProperty('--coin-x',`${wallet.left-origin.left+(index-1)*10}px`);
+          coin.style.setProperty('--coin-y',`${wallet.top-origin.top}px`);
+          document.body.appendChild(coin);
+          setTimeout(()=>coin.remove(),950);
+        }
+        setTimeout(()=>pop.remove(),1300);
+        requestAnimationFrame(()=>document.querySelector('.adventure-track')?.classList.add('pulse'));
+        setTimeout(()=>document.querySelector('.adventure-track')?.classList.remove('pulse'),650);
+      }
+      function grantReward(kind,id,label,sourceRect){
+        const key=`${kind}:${id}:${todayKey}`;
+        if(state.rewards.ledger[key])return false;
+        const rules={task:[12,3],habit:[8,1],study:[10,2],english:[10,2]};
+        const [xp,coins]=rules[kind]||[5,1];
+        state.rewards.ledger[key]=true;
+        state.rewards.todayXp+=xp;
+        state.rewards.combo+=1;
+        state.rewards.coins+=coins;
+        state.profile.xp+=xp;
+        while(state.profile.xp>=1000){state.profile.xp-=1000;state.profile.level+=1}
+        [15,30,45,60].forEach((milestone,index)=>{
+          if(state.rewards.todayXp>=milestone&&!state.rewards.milestones.includes(milestone)){
+            state.rewards.milestones.push(milestone);
+            state.rewards.coins+=index+1;
+          }
+        });
+        if(state.rewards.combo>0&&state.rewards.combo%3===0){state.rewards.coins+=3;toastMessage('三连完成！额外获得 3 枚小镇币 🎁')}
+        save();
+        animateReward(sourceRect,xp,coins,label);
+        return true;
+      }
       function updateSidebar(){
-        const earned=state.tasks.filter(item=>item.watered).length*5;
-        const xp=Math.min(999,state.profile.xp+earned);
-        document.querySelector('#sidebarLevel').textContent=`等级 ${state.profile.level} · ${xp} / 1000 XP`;
+        const xp=Math.min(999,state.profile.xp);
+        document.querySelector('#sidebarLevel').textContent=`等级 ${state.profile.level} · ${xp} / 1000 XP · 🪙 ${state.rewards.coins}`;
         document.querySelector('#sidebarXp').style.width=`${Math.min(100,xp/10)}%`;
+      }
+      function renderRewardJourney(){
+        const target=60;
+        const progress=Math.min(100,Math.round(state.rewards.todayXp/target*100));
+        const milestones=[15,30,45,60].map((value,index)=>`<div class="milestone ${state.rewards.milestones.includes(value)?'unlocked':''}"><span>${state.rewards.milestones.includes(value)?'🎁':'🔒'}</span><b>${value} XP</b><small>奖励 +${index+1} 🪙</small></div>`).join('');
+        return `<article class="panel reward-journey"><div class="reward-top"><div class="reward-title"><span>🗺️</span><div><b>今日冒险进度</b><small>每完成一件事，都会获得 XP、小镇币和成长反馈</small></div></div><div class="reward-wallet"><span class="reward-pill">✨ ${state.rewards.todayXp} / ${target} XP</span><span class="reward-pill">🪙 ${state.rewards.coins}</span><span class="reward-pill">🔥 ${state.rewards.combo} 连击</span></div></div><div class="adventure-track" aria-label="今日冒险进度 ${progress}%"><i style="width:${progress}%"></i></div><div class="milestones">${milestones}</div></article>`;
       }
       function renderPlants(){
         const beds=plantNames.map((name,index)=>{
@@ -282,51 +354,165 @@
         const completedHabits=state.habits.filter(item=>item.done).length;
         const balance=(state.modules[2]||[]).reduce((sum,item)=>sum+(Number(item.amount)||0),0);
         content.querySelector('.garden')?.insertAdjacentHTML('beforebegin',`<section class="summary-row"><div class="summary-card"><b>${completedTasks}/${state.tasks.length}</b><small>今日任务</small></div><div class="summary-card"><b>${completedHabits}/${state.habits.length}</b><small>习惯浇水</small></div><div class="summary-card"><b>¥${balance.toLocaleString()}</b><small>账本结余</small></div><div class="summary-card"><b>${state.modules[8]?.[0]?.title||'--'}</b><small>最新体重</small></div></section>`);
-        content.querySelector('.garden')?.insertAdjacentHTML('afterbegin',renderPlants());
+        content.querySelector('.garden')?.insertAdjacentHTML('afterbegin',renderRewardJourney()+renderPlants());
         updateSidebar();
       }
       function renderModuleStats(index,list){
         if(index===2){const income=list.filter(item=>item.amount>0).reduce((sum,item)=>sum+item.amount,0);const expense=Math.abs(list.filter(item=>item.amount<0).reduce((sum,item)=>sum+item.amount,0));return `<section class="summary-row"><div class="summary-card"><b>¥${income.toLocaleString()}</b><small>本期收入</small></div><div class="summary-card"><b>¥${expense.toLocaleString()}</b><small>本期支出</small></div><div class="summary-card"><b>¥${(income-expense).toLocaleString()}</b><small>当前结余</small></div><div class="summary-card"><b>${list.length}</b><small>记录笔数</small></div></section>`}
-        if(index===3)return `<section class="summary-row"><div class="summary-card"><b>${list.length}</b><small>官方动态</small></div><div class="summary-card"><b>7月29日</b><small>最近抓取</small></div><div class="summary-card"><b>4</b><small>官方来源</small></div><div class="summary-card"><b>每日 1 条</b><small>推荐精读</small></div></section>`;
+        if(index===3){const updated=state.live.newsUpdatedAt?new Date(state.live.newsUpdatedAt).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}):'等待抓取';const sources=new Set(list.map(item=>item.source).filter(Boolean)).size;return `<section class="summary-row"><div class="summary-card"><b>${list.length}</b><small>实时动态</small></div><div class="summary-card"><b>${updated}</b><small>最近更新</small></div><div class="summary-card"><b>${sources}</b><small>新闻来源</small></div><div class="summary-card"><b>每 30 分钟</b><small>自动刷新</small></div></section>`}
         if(index===4||index===6||index===7){const done=list.filter(item=>item.done).length;const percent=list.length?Math.round(done/list.length*100):0;return `<section class="summary-row"><div class="summary-card"><b>${done}/${list.length}</b><small>今日完成</small></div><div class="summary-card"><b>${percent}%</b><small>完成进度</small><div class="progress-track"><i style="width:${percent}%"></i></div></div><div class="summary-card"><b>${Math.max(0,list.length-done)}</b><small>等待完成</small></div><div class="summary-card"><b>+${done*5} XP</b><small>今日奖励</small></div></section>`}
         return '';
       }
       function renderRecord(item,itemIndex,config,index){
-        if(index===3)return `<article class="record news-card"><div class="record-icon">🛰️</div><div class="record-copy"><span class="source-tag">${safe(item.source||'我的收藏')}</span><b>${safe(item.title)}</b><p>${safe(item.summary||item.meta||'')}</p><small>${safe(item.meta||'')}</small>${item.url?` · <a href="${safe(item.url)}" target="_blank" rel="noopener">阅读原文 ↗</a>`:''}</div><div class="item-actions"><button class="icon-btn" data-edit="${itemIndex}">编辑</button><button class="icon-btn" data-delete="${itemIndex}">删除</button></div></article>`;
+        if(index===3)return `<article class="record news-card ${item.live?'live-news':''}"><div class="record-icon">🛰️</div><div class="record-copy"><span class="source-tag">${item.live?'实时 · ':''}${safe(item.source||'我的收藏')}</span><b>${safe(item.title)}</b><p>${safe(item.summary||item.meta||'')}</p><small>${safe(item.meta||'')}</small>${item.url?` · <a href="${safeUrl(item.url)}" target="_blank" rel="noopener">阅读原文 ↗</a>`:''}</div>${item.live?'':`<div class="item-actions"><button class="icon-btn" data-edit="${itemIndex}">编辑</button><button class="icon-btn" data-delete="${itemIndex}">删除</button></div>`}</article>`;
         const icon=index===4?(item.icon||'🌿'):(item.done?'✅':config.icon);
         const toggle=index===1?`data-task-module="${itemIndex}" title="点击完成任务"`:([4,6,7].includes(index)?`data-toggle="${itemIndex}" title="点击打卡"`:'');
         return `<article class="record"><button class="record-icon" ${toggle}>${icon}</button><div class="record-copy"><b>${safe(item.title)}</b><small>${safe(item.meta||'刚刚记录')}</small>${[6,7].includes(index)?`<div class="progress-track"><i style="width:${item.done?100:45}%"></i></div>`:''}</div><div class="item-actions"><button class="icon-btn" data-edit="${itemIndex}">编辑</button><button class="icon-btn" data-delete="${itemIndex}">删除</button></div></article>`;
       }
-      function renderModule(index){
-        if(index===0){renderToday();return}
-        const config=moduleConfig[index];
-        const list=getList(index);
-        content.innerHTML=`<div class="module-view"><div class="topbar"><div><p class="date">日常小镇 · 今日成长记录</p><h1>${config.icon} ${config.title}</h1></div><div class="avatar"><span>已自动保存</span><div class="face">😊</div></div></div>${renderModuleStats(index,list)}<div class="module-head"><h2>${index===3?'今日官方动态':'我的记录'}</h2><button class="add" id="moduleAdd">${config.action}</button></div><div class="module-grid"><aside class="insight"><span>💡</span><div><b>小镇优化建议</b><p>${config.tip}</p></div></aside>${list.length?list.map((item,itemIndex)=>renderRecord(item,itemIndex,config,index)).join(''):`<div class="empty"><span>${config.icon}</span><b>${config.empty}</b></div>`}</div></div>`;
+      function liveStatus(type){
+        const loading=liveLoading[type];
+        const error=liveError[type];
+        const updated=type==='news'?state.live.newsUpdatedAt:state.live.englishUpdatedAt;
+        const text=loading?'正在从网络收集最新内容…':error?`连接失败，正在使用本地缓存 · ${error}`:updated?`实时内容已更新 · ${new Date(updated).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`:'等待首次更新';
+        return `<div class="live-state ${loading?'loading':''}"><i class="live-dot"></i><div><b>${loading?'正在更新':'免 API 密钥实时技能'}</b><div>${safe(text)}</div></div></div>`;
+      }
+      function renderEnglishModule(){
+        const words=state.live.englishWords||[];
+        const phrase=liveSkill.getDailyPhrase();
+        const custom=state.modules[7]||[];
+        const progressItems=[...words,{done:state.live.englishPhraseDone},...custom];
+        const wordCards=words.map((item,index)=>`<article class="record word-card"><div class="record-icon">${item.done?'✅':'🔤'}</div><div class="record-copy"><span class="source-tag">${safe(item.category||'每日单词')}</span><h3>${safe(item.word)}</h3><span class="phonetic">${safe(item.phonetic||'在线词典')}</span><p class="definition">${safe(item.translation)} · ${safe(item.definition)}</p><div class="example">${safe(item.example)}</div><div class="word-actions"><button class="compact-button" data-speak-word="${index}">🔊 朗读</button><button class="compact-button ${item.done?'':'primary'}" data-english-done="${index}">${item.done?'已掌握 ✓':'完成练习 +10 XP'}</button></div></div></article>`).join('');
+        const courseCards=liveSkill.courses.map(course=>`<a class="course-card" href="${safeUrl(course.url)}" target="_blank" rel="noopener"><b>${safe(course.title)} ↗</b><span>${safe(course.level)}</span><p>${safe(course.description)}</p></a>`).join('');
+        const customCards=custom.length?`<section class="course-section"><h2>📝 我的自定义练习</h2><div class="module-grid">${custom.map((item,index)=>renderRecord(item,index,moduleConfig[7],7)).join('')}</div></section>`:'';
+        const loading=!words.length&&liveLoading.english?'<div class="loading-card"><span>📚</span><b>正在准备今天的单词与例句…</b></div>':wordCards||'<div class="loading-card"><span>🔤</span><b>点击“换一组”获取今日单词</b></div>';
+        content.innerHTML=`<div class="module-view"><div class="topbar"><div><p class="date">在线词典 · 每日句子 · 官方网课</p><h1>🔤 英语练习</h1></div><div class="avatar"><span>内容自动缓存</span><div class="face">😊</div></div></div>${renderModuleStats(7,progressItems)}<div class="module-grid"><div class="live-toolbar">${liveStatus('english')}<form class="english-search" id="englishSearch"><input id="englishWordInput" aria-label="查询英文单词" placeholder="输入单词，例如 progress" autocomplete="off"><button class="compact-button primary" type="submit">实时查词</button></form><div class="toolbar-actions"><button class="compact-button" id="refreshEnglish" ${liveLoading.english?'disabled':''}>🎲 换一组</button><button class="compact-button" id="moduleAdd">+ 自定义练习</button></div></div><article class="phrase-card"><div class="phrase-icon">🗣️</div><div class="phrase-copy"><b>${safe(phrase.text)}</b><p>${safe(phrase.translation)}</p><small>今日挑战：${safe(phrase.challenge)}</small></div><div class="phrase-actions"><button class="compact-button" data-speak-phrase>🔊 跟读</button><button class="compact-button ${state.live.englishPhraseDone?'':'primary'}" data-phrase-done>${state.live.englishPhraseDone?'已完成 ✓':'完成 +10 XP'}</button></div></article>${loading}<section class="course-section"><h2>🎓 可直接学习的官方网课</h2><div class="course-grid">${courseCards}</div></section>${customCards}<div class="status-note">词义与发音来自 Free Dictionary API；课程链接来自 BBC Learning English 与 VOA Learning English。</div></div></div>`;
         updateSidebar();
       }
-      function navigate(index){nav.forEach(item=>item.classList.remove('active'));nav[index].classList.add('active');activeModule=index;renderModule(index);document.querySelector('.sidebar').classList.remove('open');burst(nav[index]);toastMessage(`已进入 ${moduleConfig[index]?.title||'今天'}`)}
+      async function refreshNews(force=false){
+        if(liveLoading.news)return;
+        const fresh=Date.now()-state.live.newsUpdatedAt<30*60*1000&&(state.modules[3]||[]).some(item=>item.live);
+        if(!force&&fresh)return;
+        liveLoading.news=true;
+        liveError.news='';
+        if(activeModule===3)renderModule(3);
+        try{
+          const stories=await liveSkill.fetchAiNews();
+          const manual=(state.modules[3]||[]).filter(item=>item.userAdded);
+          state.modules[3]=[...stories,...manual];
+          state.live.newsUpdatedAt=Date.now();
+          save();
+          toastMessage(`已抓取 ${stories.length} 条最新 AI 动态 ✨`);
+        }catch(error){
+          liveError.news='请检查网络后重试';
+          toastMessage('实时新闻暂时连接失败，已保留本地内容');
+        }finally{
+          liveLoading.news=false;
+          if(activeModule===3)renderModule(3);
+        }
+      }
+      async function refreshEnglish(force=false){
+        if(liveLoading.english)return;
+        const sameDay=state.live.englishUpdatedAt&&new Date(state.live.englishUpdatedAt).toDateString()===new Date().toDateString();
+        if(!force&&sameDay&&state.live.englishWords.length)return;
+        liveLoading.english=true;
+        liveError.english='';
+        if(activeModule===7)renderEnglishModule();
+        try{
+          const words=await liveSkill.fetchEnglishWords(state.live.englishOffset);
+          const previous=new Map((state.live.englishWords||[]).map(item=>[item.word,item.done]));
+          state.live.englishWords=words.map(item=>({...item,done:previous.get(item.word)||false}));
+          state.live.englishUpdatedAt=Date.now();
+          save();
+          toastMessage('今日单词、释义和例句已更新 📚');
+        }catch(error){
+          liveError.english='在线词典暂不可用';
+          toastMessage('在线词典连接失败，稍后再试');
+        }finally{
+          liveLoading.english=false;
+          if(activeModule===7)renderEnglishModule();
+        }
+      }
+      async function lookupEnglishWord(word){
+        if(liveLoading.english)return;
+        liveLoading.english=true;
+        if(activeModule===7)renderEnglishModule();
+        try{
+          const item=await liveSkill.lookupEnglishWord(word);
+          const existing=(state.live.englishWords||[]).find(entry=>entry.word===item.word);
+          state.live.englishWords=[{...item,done:existing?.done||false},...(state.live.englishWords||[]).filter(entry=>entry.word!==item.word)].slice(0,8);
+          state.live.englishUpdatedAt=Date.now();
+          liveError.english='';
+          save();
+          toastMessage(`已找到 ${item.word} 的实时词义`);
+        }catch(error){
+          liveError.english='没有找到这个单词';
+          toastMessage('没有查到该单词，请检查拼写');
+        }finally{
+          liveLoading.english=false;
+          if(activeModule===7)renderEnglishModule();
+        }
+      }
+      function speakEnglish(text,audio=''){
+        const fallback=()=>{
+          if(!('speechSynthesis' in window))return;
+          speechSynthesis.cancel();
+          const utterance=new SpeechSynthesisUtterance(text);
+          utterance.lang='en-US';
+          utterance.rate=.82;
+          speechSynthesis.speak(utterance);
+        };
+        if(audio){const player=new Audio(audio);player.play().catch(fallback)}else fallback();
+      }
+      function renderModule(index){
+        if(index===0){renderToday();return}
+        if(index===7){renderEnglishModule();return}
+        const config=moduleConfig[index];
+        const list=getList(index);
+        const headActions=index===3?`<div class="toolbar-actions"><button class="compact-button primary" id="refreshNews" ${liveLoading.news?'disabled':''}>${liveLoading.news?'正在抓取…':'↻ 刷新实时新闻'}</button><button class="add" id="moduleAdd">${config.action}</button></div>`:`<button class="add" id="moduleAdd">${config.action}</button>`;
+        const liveToolbar=index===3?`<div class="live-toolbar">${liveStatus('news')}<small>数据源：Hacker News 实时搜索 · 无需 API 密钥</small></div>`:'';
+        const records=liveLoading.news&&!list.some(item=>item.live)?'<div class="loading-card"><span>🛰️</span><b>正在抓取最新 AI 新闻…</b></div>':list.length?list.map((item,itemIndex)=>renderRecord(item,itemIndex,config,index)).join(''):`<div class="empty"><span>${config.icon}</span><b>${config.empty}</b></div>`;
+        content.innerHTML=`<div class="module-view"><div class="topbar"><div><p class="date">日常小镇 · 今日成长记录</p><h1>${config.icon} ${config.title}</h1></div><div class="avatar"><span>已自动保存</span><div class="face">😊</div></div></div>${renderModuleStats(index,list)}<div class="module-head"><h2>${index===3?'今日实时动态':'我的记录'}</h2>${headActions}</div><div class="module-grid">${liveToolbar}<aside class="insight"><span>💡</span><div><b>小镇优化建议</b><p>${config.tip}</p></div></aside>${records}</div></div>`;
+        updateSidebar();
+      }
+      function navigate(index){nav.forEach(item=>item.classList.remove('active'));nav[index].classList.add('active');activeModule=index;renderModule(index);document.querySelector('.sidebar').classList.remove('open');burst(nav[index]);toastMessage(`已进入 ${moduleConfig[index]?.title||'今天'}`);if(index===3)refreshNews();if(index===7)refreshEnglish()}
       nav.forEach((button,index)=>button.addEventListener('click',event=>{event.stopImmediatePropagation();navigate(index)}));
       content.addEventListener('click',event=>{
         if(event.target.closest('.face')){openProfile();return}
+        if(event.target.closest('#refreshNews')){refreshNews(true);return}
+        if(event.target.closest('#refreshEnglish')){state.live.englishOffset+=1;state.live.englishUpdatedAt=0;save();refreshEnglish(true);return}
+        const speakWordButton=event.target.closest('[data-speak-word]');
+        if(speakWordButton){const item=state.live.englishWords[Number(speakWordButton.dataset.speakWord)];if(item)speakEnglish(item.word,item.audio);return}
+        if(event.target.closest('[data-speak-phrase]')){speakEnglish(liveSkill.getDailyPhrase().text);return}
+        const englishDone=event.target.closest('[data-english-done]');
+        if(englishDone){const index=Number(englishDone.dataset.englishDone);const item=state.live.englishWords[index];const sourceRect=englishDone.getBoundingClientRect();item.done=!item.done;if(item.done)grantReward('english',item.id,item.word,sourceRect);save();renderEnglishModule();burst(document.querySelector(`[data-english-done="${index}"]`));toastMessage(item.done?'单词练习完成，记忆值上升！':'已恢复为待复习');return}
+        const phraseDone=event.target.closest('[data-phrase-done]');
+        if(phraseDone){const sourceRect=phraseDone.getBoundingClientRect();state.live.englishPhraseDone=!state.live.englishPhraseDone;if(state.live.englishPhraseDone)grantReward('english',liveSkill.getDailyPhrase().id,'今日句子',sourceRect);save();renderEnglishModule();burst(document.querySelector('[data-phrase-done]'));toastMessage(state.live.englishPhraseDone?'今日句子完成，口语值 +1！':'已恢复今日句子');return}
         const addButton=event.target.closest('#addTask,#moduleAdd');
         if(addButton){event.stopImmediatePropagation();if(activeModule===0)activeModule=1;openDialog();return}
         const check=event.target.closest('[data-check]');
-        if(check){event.stopImmediatePropagation();const index=Number(check.dataset.check);const task=state.tasks[index];const sourceRect=check.getBoundingClientRect();task.done=!task.done;const shouldWater=task.done&&!task.watered;if(shouldWater){task.watered=true;state.waterCount+=1}save();activeModule===0?renderToday():renderModule(1);if(shouldWater)requestAnimationFrame(()=>animateWater(sourceRect));burst(check);toastMessage(task.done?(shouldWater?'任务完成！植物获得一次浇水 💧':'任务完成，获得 5 XP！'):'任务已恢复');return}
+        if(check){event.stopImmediatePropagation();const index=Number(check.dataset.check);const task=state.tasks[index];const sourceRect=check.getBoundingClientRect();task.done=!task.done;const shouldWater=task.done&&!task.watered;if(shouldWater){task.watered=true;state.waterCount+=1}if(task.done)grantReward('task',task.id,task.title,sourceRect);save();activeModule===0?renderToday():renderModule(1);if(shouldWater)requestAnimationFrame(()=>animateWater(sourceRect));const renderedCheck=document.querySelector(`[data-check="${index}"]`);if(renderedCheck)burst(renderedCheck);toastMessage(task.done?(shouldWater?'任务完成！+12 XP、+3 小镇币，并为植物浇水 💧':'任务完成，奖励已记录！'):'任务已恢复，已经获得的奖励会保留');return}
         const taskModule=event.target.closest('[data-task-module]');
-        if(taskModule){const index=Number(taskModule.dataset.taskModule);const task=state.tasks[index];const sourceRect=taskModule.getBoundingClientRect();task.done=!task.done;const shouldWater=task.done&&!task.watered;if(shouldWater){task.watered=true;state.waterCount+=1}save();renderModule(1);if(shouldWater)requestAnimationFrame(()=>animateWater(sourceRect));burst(taskModule);toastMessage(task.done?(shouldWater?'任务完成！植物获得一次浇水 💧':'任务完成，获得 5 XP！'):'任务已恢复');return}
+        if(taskModule){const index=Number(taskModule.dataset.taskModule);const task=state.tasks[index];const sourceRect=taskModule.getBoundingClientRect();task.done=!task.done;const shouldWater=task.done&&!task.watered;if(shouldWater){task.watered=true;state.waterCount+=1}if(task.done)grantReward('task',task.id,task.title,sourceRect);save();renderModule(1);if(shouldWater)requestAnimationFrame(()=>animateWater(sourceRect));const renderedTask=document.querySelector(`[data-task-module="${index}"]`);if(renderedTask)burst(renderedTask);toastMessage(task.done?(shouldWater?'任务完成！植物获得浇水和成长奖励 💧':'任务完成，奖励已记录！'):'任务已恢复');return}
         const habit=event.target.closest('[data-habit]');
-        if(habit){event.stopImmediatePropagation();const index=Number(habit.dataset.habit);state.habits[index].done=!state.habits[index].done;save();renderToday();burst(habit);toastMessage(state.habits[index].done?'打卡成功，小苗长大啦！':'已取消今天的打卡');return}
+        if(habit){event.stopImmediatePropagation();const index=Number(habit.dataset.habit);const item=state.habits[index];const sourceRect=habit.getBoundingClientRect();item.done=!item.done;if(item.done)grantReward('habit',item.id,item.title,sourceRect);save();renderToday();const renderedHabit=document.querySelector(`[data-habit="${index}"]`);if(renderedHabit)burst(renderedHabit);toastMessage(item.done?'打卡成功！+8 XP、+1 小镇币':'已取消今天的打卡，奖励不会重复领取');return}
         const plant=event.target.closest('[data-plant]');
         if(plant){const index=Number(plant.dataset.plant);plant.classList.add('watered');setTimeout(()=>plant.classList.remove('watered'),700);toastMessage(`${plantNames[index]}：${plant.querySelector('small').textContent}`);return}
         const toggle=event.target.closest('[data-toggle]');
-        if(toggle){const index=Number(toggle.dataset.toggle);const list=getList(activeModule);list[index].done=!list[index].done;save();renderModule(activeModule);burst(toggle);toastMessage(list[index].done?'打卡成功，获得 5 XP！':'已取消打卡');return}
+        if(toggle){const index=Number(toggle.dataset.toggle);const list=getList(activeModule);const item=list[index];const sourceRect=toggle.getBoundingClientRect();item.done=!item.done;if(item.done)grantReward(activeModule===6?'study':'english',item.id,item.title,sourceRect);save();renderModule(activeModule);const renderedToggle=document.querySelector(`[data-toggle="${index}"]`);if(renderedToggle)burst(renderedToggle);toastMessage(item.done?'练习完成，成长奖励已到账！':'已取消打卡');return}
         const edit=event.target.closest('[data-edit]');if(edit){openDialog(Number(edit.dataset.edit));return}
         const remove=event.target.closest('[data-delete]');if(remove){const index=Number(remove.dataset.delete);const list=getList(activeModule);list.splice(index,1);save();renderModule(activeModule);toastMessage('记录已移入回收篮');}
       },true);
+      content.addEventListener('submit',event=>{
+        if(event.target.id!=='englishSearch')return;
+        event.preventDefault();
+        const input=event.target.querySelector('#englishWordInput');
+        const word=input.value.trim();
+        if(word)lookupEnglishWord(word);
+      });
       form.addEventListener('submit',event=>{
         event.preventDefault();
         const list=getList(activeModule);
-        const item={title:titleInput.value.trim(),meta:metaInput.value.trim(),done:false,...(activeModule===4?{icon:'🌿'}:{})};
+        const item={id:editingIndex>=0?list[editingIndex].id:`custom-${Date.now()}`,title:titleInput.value.trim(),meta:metaInput.value.trim(),done:false,...(activeModule===4?{icon:'🌿'}:{}),...(activeModule===3?{source:'我的收藏',userAdded:true}:{}),...(activeModule===3&&/^https?:\/\//.test(metaInput.value.trim())?{url:metaInput.value.trim()}: {})};
         if(editingIndex>=0)list[editingIndex]={...list[editingIndex],...item};else list.unshift(item);
         save();modal.classList.remove('open');renderModule(activeModule);burst(document.querySelector('#moduleAdd'));toastMessage(editingIndex>=0?'修改已保存':'新记录已创建');
       });
@@ -348,6 +534,9 @@
       document.querySelector('#mobileMenu').addEventListener('click',()=>document.querySelector('.sidebar').classList.toggle('open'));
       window.dailyTownNavigate=navigate;
       window.dailyTownState=state;
+      window.dailyTownRefreshNews=()=>refreshNews(true);
+      window.dailyTownRefreshEnglish=()=>{state.live.englishOffset+=1;state.live.englishUpdatedAt=0;save();refreshEnglish(true)};
+      window.dailyTownLookupEnglish=lookupEnglishWord;
       save();
       renderToday();
     })();
@@ -392,10 +581,14 @@
         const text=message.trim();
         if(!text)return;
         addMessage(text,'user');
-        const routes=[['待办|任务',1,'已经为你打开今日待办。先完成最重要的一件小事吧。'],['记账|收支|花了',2,'小镇账本打开啦，记得把金额和分类写清楚。'],['新闻|AI|人工智能',3,'这是今天抓取的官方 AI 动态，推荐先读第一条。'],['习惯|打卡',4,'习惯花园已经打开，点击图标就能打卡。'],['灵感',5,'灵感本打开啦，先记下来，不急着判断好坏。'],['学习',6,'学习计划已打开，今天适合完成一个 30 分钟的小单元。'],['英语|单词',7,'英语练习已打开，试着大声读出今天的句子吧。'],['体重',8,'体重记录已打开，请关注长期趋势而不是单日波动。'],['复盘|总结',9,'每日复盘已打开，用三分钟回答三个问题就够了。'],['首页|今天|工作台',0,'已经回到今天的生活总览。']];
+        const routes=[['待办|任务',1,'已经为你打开今日待办。先完成最重要的一件小事吧。'],['记账|收支|花了',2,'小镇账本打开啦，记得把金额和分类写清楚。'],['新闻|AI|人工智能',3,'实时 AI 新闻已经打开，页面会自动检查最新内容。'],['习惯|打卡',4,'习惯花园已经打开，点击图标就能打卡。'],['灵感',5,'灵感本打开啦，先记下来，不急着判断好坏。'],['学习',6,'学习计划已打开，今天适合完成一个 30 分钟的小单元。'],['英语|单词',7,'英语练习已打开，可以听发音、练句子，也可以实时查词。'],['体重',8,'体重记录已打开，请关注长期趋势而不是单日波动。'],['复盘|总结',9,'每日复盘已打开，用三分钟回答三个问题就够了。'],['首页|今天|工作台',0,'已经回到今天的生活总览。']];
         const route=routes.find(item=>new RegExp(item[0],'i').test(text));
+        const wordMatch=text.match(/(?:查|查询|搜索)(?:一下)?(?:单词)?\s*([A-Za-z'-]+)/i);
         let reply;
-        if(route){window.dailyTownNavigate?.(route[1]);reply=route[2]}
+        if(/刷新.*(?:新闻|AI)/i.test(text)){window.dailyTownNavigate?.(3);window.dailyTownRefreshNews?.();reply='正在重新抓取最新 AI 新闻，请稍等一下。'}
+        else if(/换一组|换.*单词/.test(text)){window.dailyTownNavigate?.(7);window.dailyTownRefreshEnglish?.();reply='正在为你准备一组新的每日单词。'}
+        else if(wordMatch){window.dailyTownNavigate?.(7);window.dailyTownLookupEnglish?.(wordMatch[1]);reply=`正在实时查询 ${wordMatch[1]} 的释义、例句和发音。`}
+        else if(route){window.dailyTownNavigate?.(route[1]);reply=route[2]}
         else if(/有什么任务|还要做什么/.test(text)){const tasks=window.dailyTownState?.tasks?.filter(item=>!item.done)||[];reply=tasks.length?`你还有 ${tasks.length} 件任务：${tasks.map(item=>item.title).join('、')}。`:'今天的任务全部完成啦！'}
         else if(/你好|在吗|嗨/.test(text))reply='我在呀！我是小橘，可以帮你打开栏目、查看任务和陪你做每日复盘。';
         else if(/建议|怎么办/.test(text))reply='先选一件十分钟内能开始的小事。完成后回来打卡，我会给你一点小镇元气。';
