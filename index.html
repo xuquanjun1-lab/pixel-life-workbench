@@ -674,7 +674,8 @@
       button.type='button';
       button.textContent='📱 安装到手机';
       button.setAttribute('aria-label','将日常小镇安装到手机');
-      Object.assign(button.style,{position:'fixed',left:'18px',bottom:'18px',zIndex:'70',display:'none',border:'3px solid #72513a',borderRadius:'9px',background:'#f6c656',color:'#5a3f2c',padding:'10px 13px',fontWeight:'700',boxShadow:'4px 4px 0 #6f4a35',cursor:'pointer'});
+      const installed=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+      Object.assign(button.style,{position:'fixed',left:'18px',bottom:'18px',zIndex:'70',display:installed?'none':'block',border:'3px solid #72513a',borderRadius:'9px',background:'#f6c656',color:'#5a3f2c',padding:'10px 13px',fontWeight:'700',boxShadow:'4px 4px 0 #6f4a35',cursor:'pointer'});
       document.body.appendChild(button);
       window.addEventListener('beforeinstallprompt',event=>{
         event.preventDefault();
@@ -682,11 +683,15 @@
         button.style.display='block';
       });
       button.addEventListener('click',async()=>{
-        if(!installPrompt)return;
-        await installPrompt.prompt();
-        await installPrompt.userChoice;
-        installPrompt=null;
-        button.style.display='none';
+        if(installPrompt){
+          await installPrompt.prompt();
+          await installPrompt.userChoice;
+          installPrompt=null;
+          button.style.display='none';
+          return;
+        }
+        const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+        alert(isIOS?'请点击 Safari 底部的“分享”按钮，再选择“添加到主屏幕”。':'请点击浏览器右上角菜单，再选择“安装应用”或“添加到主屏幕”。');
       });
       window.addEventListener('appinstalled',()=>{button.style.display='none'});
     })();
