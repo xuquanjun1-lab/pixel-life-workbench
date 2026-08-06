@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbf8f1">
+  <title>Daily Desk - 纸质办公工作台</title>
+  <style>
+    :root {
+      --font-sans: Inter, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      --font-serif: Georgia, "Songti SC", "SimSun", serif;
+      --page: #e7e3dc;
+      --paper: #fbf8f1;
+      --paper-soft: #f5efe6;
+      --ink: #241f1d;
+      --muted: #756a61;
+      --line: #d8cec2;
+      --line-strong: #bbaea0;
+      --accent: #ad443e;
+      --accent-soft: #f8e7e3;
+      --accent-ink: #913832;
+      --blue: #356d8d;
+      --blue-soft: #eaf2f6;
+      --green: #2b7e5b;
+      --amber: #a86e2d;
+      --danger: #b84842;
+      --rail: #252221;
+      --rail-ink: #f7eee7;
+      --rail-muted: #c6b8af;
+      --rail-line: rgba(255,255,255,.17);
+      --rail-hover: #322d2b;
+      --rail-active: #3a3330;
+      --shadow: 0 20px 48px rgba(58,49,39,.16);
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--page); }
+    body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font-sans); overflow-x: hidden; }
+    button, input, textarea, select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(173,68,62,.38); outline-offset: 2px; }
+    .app { width: min(1480px, calc(100% - 40px)); min-height: calc(100dvh - 40px); display: grid; grid-template-columns: 220px minmax(0,1fr); margin: 20px auto; overflow: hidden; border: 1px solid var(--line-strong); background: var(--paper); box-shadow: var(--shadow); transition: background 220ms ease, color 220ms ease; }
+
+    /* Side navigation */
+    .sidebar { display: flex; flex-direction: column; min-height: 100%; padding: 19px 12px 13px; border-right: 1px solid var(--rail-line); background: var(--rail); color: var(--rail-ink); }
+    .brand { display: flex; align-items: center; gap: 9px; margin: 0 7px 17px; padding-bottom: 16px; border-bottom: 1px solid var(--rail-line); font-size: 15px; font-weight: 780; letter-spacing: .01em; }
+    .brand-mark { display: grid; width: 26px; height: 26px; place-items: center; border: 1px solid currentColor; color: #e8756b; font: 700 11px/1 var(--font-serif); }
+    .nav-kicker { margin: 0 8px 8px; color: var(--rail-muted); font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+    .main-nav { display: grid; gap: 2px; }
+    .main-nav button { display: flex; align-items: center; width: 100%; min-height: 37px; gap: 9px; padding: 0 8px; border: 0; border-left: 2px solid transparent; background: transparent; color: var(--rail-muted); cursor: pointer; text-align: left; font-size: 12px; transition: background 160ms ease, color 160ms ease, transform 160ms ease; }
+    .main-nav button:hover { background: var(--rail-hover); color: var(--rail-ink); }
+    .main-nav button.active { border-left-color: var(--accent); background: var(--rail-active); color: var(--rail-ink); font-weight: 750; }
+    .main-nav svg { width: 16px; height: 16px; stroke-width: 1.7; }
+    .profile-trigger { margin-top: auto; padding: 13px 8px 2px; border: 0; border-top: 1px solid var(--rail-line); background: transparent; color: var(--rail-ink); cursor: pointer; text-align: left; }
+    .profile-trigger small { display: block; color: var(--rail-muted); font-size: 10px; }
+    .profile-trigger b { display: block; margin-top: 6px; font-size: 12px; }
+    .profile-track { height: 4px; margin-top: 9px; background: rgba(255,255,255,.18); }
+    .profile-track i { display: block; height: 100%; background: #e8756b; transition: width 240ms ease; }
+
+    /* App chrome */
+    .main { min-width: 0; padding: 25px 27px 24px; background: var(--paper); }
+    .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding-bottom: 17px; border-bottom: 1px solid var(--line); }
+    .eyebrow { margin: 0 0 6px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .11em; }
+    .topbar h1 { margin: 0; font-size: 26px; line-height: 1.15; letter-spacing: 0; }
+    .actions { display: flex; align-items: center; gap: 7px; }
+    .icon-button, .outline-button, .primary-button { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; font-size: 11px; font-weight: 760; transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease; }
+    .icon-button:hover, .outline-button:hover, .primary-button:hover { transform: translateY(-1px); }
+    .icon-button:active, .outline-button:active, .primary-button:active { transform: scale(.98); }
+    .icon-button { width: 38px; }
+    .outline-button, .primary-button { padding: 0 12px; }
+    .primary-button { border-color: var(--accent); background: var(--accent); color: #fff; box-shadow: 0 5px 12px rgba(173,68,62,.14); }
+    .actions svg, .primary-button svg, .outline-button svg, .icon-button svg { width: 15px; height: 15px; stroke-width: 1.9; }
+    .theme-select { height: 38px; max-width: 108px; padding: 0 7px; border: 1px solid var(--line); border-radius: 0; background: var(--paper); color: var(--muted); font-size: 10px; }
+
+    /* Dashboard */
+    .overview { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(310px,.7fr); gap: 15px; margin-top: 16px; }
+    .brief-card { position: relative; min-height: 145px; padding: 18px 20px; overflow: hidden; border: 2px solid var(--accent); background: var(--paper); }
+    .brief-card::before { content: "TODAY'S BRIEF"; display: block; margin-bottom: 11px; color: var(--accent); font-size: 9px; font-weight: 800; letter-spacing: .16em; }
+    .brief-card h2 { margin: 0; max-width: 650px; font: 700 20px/1.32 var(--font-serif); }
+    .brief-card p { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .progress-line { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+    .progress-line .line { flex: 1; height: 5px; background: #e9dcd1; }
+    .progress-line .line i { display: block; height: 100%; background: var(--accent); transition: width 260ms cubic-bezier(.2,.9,.3,1); }
+    .progress-line b { color: var(--muted); font-size: 10px; white-space: nowrap; }
+    .paper-stamp { position: absolute; right: 18px; bottom: 16px; display: grid; width: 58px; height: 58px; place-items: center; border: 1px solid var(--accent); color: var(--accent); font-size: 8px; font-weight: 800; letter-spacing: .1em; text-align: center; transform: rotate(-8deg); transition: transform 220ms ease, opacity 220ms ease; }
+    .paper-stamp.pulse { transform: rotate(-8deg) scale(1.12); }
+    .stats { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+    .stat { min-height: 69px; padding: 12px; border: 1px solid var(--line); background: var(--paper); }
+    .stat small { display: block; color: var(--muted); font-size: 10px; }
+    .stat b { display: block; margin-top: 6px; color: var(--ink); font-size: 18px; line-height: 1; font-variant-numeric: tabular-nums; }
+    .stat b em { margin-left: 3px; color: var(--accent); font-size: 10px; font-style: normal; }
+    .stat .green { color: var(--green); }
+    .dashboard-grid { display: grid; grid-template-columns: minmax(0,1.48fr) minmax(285px,.76fr); gap: 15px; margin-top: 15px; }
+    .panel { border: 1px solid var(--line); background: var(--paper); }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+    .panel-head h2, .panel-head h3 { margin: 0; font-size: 13px; }
+    .text-button { padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 10px; font-weight: 800; }
+    .task-list { padding: 2px 16px; }
+    .task-row { display: grid; grid-template-columns: 20px minmax(0,1fr) auto; align-items: center; gap: 9px; min-height: 53px; border-bottom: 1px solid var(--line); }
+    .task-row:last-child { border-bottom: 0; }
+    .check { display: grid; width: 18px; height: 18px; place-items: center; padding: 0; border: 1px solid #a49b90; background: transparent; color: #fff; cursor: pointer; transition: transform 160ms ease, background 160ms ease, border-color 160ms ease; }
+    .check:hover { transform: scale(1.08); }
+    .check svg { width: 13px; height: 13px; opacity: 0; }
+    .task-row.done .check { border-color: var(--accent); background: var(--accent); }
+    .task-row.done .check svg { opacity: 1; }
+    .task-copy { min-width: 0; }
+    .task-copy b { display: block; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .task-row.done .task-copy b { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+    .task-copy small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .row-actions { display: flex; align-items: center; gap: 4px; }
+    .mini-button { min-width: 27px; min-height: 27px; display: inline-grid; place-items: center; padding: 0 6px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font-size: 9px; }
+    .mini-button:hover { border-color: var(--accent); color: var(--accent); }
+    .mini-button svg { width: 13px; height: 13px; }
+    .right-stack { display: grid; gap: 15px; }
+    .agenda { padding: 6px 16px; }
+    .agenda-row { display: grid; grid-template-columns: 40px minmax(0,1fr); gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .agenda-row:last-child { border-bottom: 0; }
+    .agenda-row time { color: var(--accent); font-size: 10px; font-weight: 800; }
+    .agenda-row b { display: block; font-size: 11px; }
+    .agenda-row small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .news-brief { padding: 5px 16px 8px; }
+    .news-brief button { display: block; width: 100%; padding: 10px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; text-align: left; }
+    .news-brief button:last-child { border-bottom: 0; }
+    .news-brief span { display: block; margin-bottom: 4px; color: var(--blue); font-size: 9px; font-weight: 800; }
+    .news-brief b { display: block; font-size: 11px; line-height: 1.45; }
+    .growth-card { position: relative; min-height: 135px; padding: 15px 16px; overflow: hidden; }
+    .growth-card h3 { margin: 0; font-size: 12px; }
+    .growth-card p { max-width: 205px; margin: 8px 0 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .plant { position: absolute; right: 22px; bottom: 12px; width: 68px; height: 85px; }
+    .pot { position: absolute; right: 14px; bottom: 0; width: 38px; height: 29px; border: 1px solid var(--accent); border-top: 5px solid var(--accent); background: var(--accent-soft); }
+    .stem { position: absolute; right: 32px; bottom: 29px; width: 2px; height: 40px; background: var(--green); transform-origin: bottom; transition: height 240ms ease; }
+    .leaf { position: absolute; width: 21px; height: 12px; border: 2px solid var(--green); border-radius: 100% 0 100% 0; opacity: .25; transition: opacity 220ms ease, transform 220ms ease; }
+    .leaf.one { right: 32px; bottom: 47px; transform: rotate(-27deg); }.leaf.two { right: 14px; bottom: 58px; transform: scaleX(-1) rotate(-27deg); }.leaf.three { right: 30px; bottom: 69px; transform: rotate(-37deg); }
+    .plant[data-stage="1"] .leaf.one, .plant[data-stage="2"] .leaf.one, .plant[data-stage="2"] .leaf.two, .plant[data-stage="3"] .leaf { opacity: 1; }
+    .plant[data-stage="2"] .stem { height: 50px; }.plant[data-stage="3"] .stem { height: 60px; }.plant[data-stage="3"] .leaf { transform: scale(1.15) rotate(-27deg); }
+    .growth-card button { position: relative; z-index: 1; margin-top: 11px; padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 10px; font-weight: 800; }
+    .status-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 15px; padding: 10px 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    .status-bar span { display: inline-flex; align-items: center; gap: 5px; }.status-dot { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }.status-bar b { color: var(--ink); }
+
+    /* Module views */
+    .module-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0; }
+    .module-toolbar h2 { margin: 0; font-size: 17px; }.module-toolbar p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }.toolbar-actions { display: flex; gap: 7px; }
+    .summary-strip { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 15px; }.summary-item { padding: 12px; border: 1px solid var(--line); background: var(--paper-soft); }.summary-item small { display:block; color:var(--muted); font-size:10px; }.summary-item b { display:block; margin-top:5px; font-size:18px; font-variant-numeric:tabular-nums; }.summary-item b.green { color:var(--green); }
+    .record-list { display: grid; gap: 8px; }.record { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 13px 15px; border: 1px solid var(--line); background: var(--paper); }.record-icon { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid var(--line-strong); color: var(--accent); }.record-icon svg { width: 16px; height: 16px; }.record-copy b { display:block; font-size:12px; }.record-copy p { margin:5px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }.record-copy small { display:block; margin-top:4px; color:var(--muted); font-size:10px; }.record[data-type="news"] { align-items:flex-start; }.record[data-type="news"] .record-copy a { color:var(--blue); text-decoration:none; font-size:10px; font-weight:700; }.amount { font-size:13px; font-weight:800; font-variant-numeric:tabular-nums; }.amount.positive { color:var(--green); }.amount.negative { color:var(--danger); }
+    .habit-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; }.habit { min-height:128px; padding:15px; border:1px solid var(--line); background:var(--paper); text-align:left; transition:transform 160ms ease,border-color 160ms ease,background 160ms ease; }.habit:hover { transform:translateY(-2px); }.habit.done { border-color:var(--green); background:#f4fbf7; }.habit-toggle { display:block; width:100%; padding:0; border:0; background:transparent; color:var(--ink); cursor:pointer; text-align:left; }.habit-toggle > span { display:grid; width:28px; height:28px; place-items:center; border:1px solid var(--line-strong); color:var(--accent); }.habit-toggle b { display:block; margin-top:19px; font-size:13px; }.habit-toggle small { display:block; margin-top:5px; color:var(--muted); font-size:10px; }.habit .row-actions { margin-top:10px; }
+    .finance-grid, .learning-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr); gap:15px; }.chart-panel { min-height:220px; padding:18px; border:1px solid var(--line); background:var(--paper); }.chart-panel h3 { margin:0; font-size:13px; }.bar-chart { display:flex; align-items:flex-end; gap:10px; height:139px; margin-top:17px; border-bottom:1px solid var(--line-strong); }.bar { flex:1; min-width:22px; position:relative; background:var(--accent-soft); }.bar i { position:absolute; left:0; right:0; bottom:0; background:var(--accent); }.bar span { position:absolute; top:calc(100% + 7px); left:50%; transform:translateX(-50%); color:var(--muted); font-size:9px; }.insight-card { padding:17px; border:1px solid var(--line); background:var(--paper-soft); }.insight-card h3 { margin:0; font-size:13px; }.insight-card p { margin:9px 0 0; color:var(--muted); font-size:11px; line-height:1.6; }.insight-card button { margin-top:14px; padding:0; border:0; background:transparent; color:var(--accent); cursor:pointer; font-size:10px; font-weight:800; }
+    .english-phrase { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:17px; border:2px solid var(--blue); background:var(--blue-soft); }.english-phrase b { display:block; font-size:18px; }.english-phrase p { margin:7px 0 0; color:var(--muted); font-size:11px; }.english-phrase .toolbar-actions { flex-wrap:wrap; }.word-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:12px; }.word-card { padding:15px; border:1px solid var(--line); background:var(--paper); }.word-card small { display:block; color:var(--blue); font-size:10px; font-weight:800; }.word-card h3 { margin:9px 0 0; font-size:19px; }.word-card p { margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.5; }.word-card .toolbar-actions { margin-top:13px; }
+    .review-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }.review-card { padding:15px; border:1px solid var(--line); background:var(--paper); }.review-card b { display:block; font-size:13px; }.review-card textarea { display:block; width:100%; min-height:136px; margin-top:11px; padding:9px; resize:vertical; border:1px solid var(--line); border-radius:0; background:#fffdf9; color:var(--ink); font-size:11px; line-height:1.6; }.review-card small { display:block; margin-top:7px; color:var(--muted); font-size:10px; }
+    .empty { display:grid; min-height:220px; place-items:center; padding:30px; border:1px dashed var(--line-strong); color:var(--muted); text-align:center; font-size:12px; }.loading { opacity:.62; pointer-events:none; }
+
+    /* Overlays and forms */
+    .backdrop { position:fixed; z-index:70; inset:0; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(26,22,18,.45); }.backdrop.open { display:flex; animation:fadeIn 180ms ease both; }.dialog { width:min(500px,100%); padding:22px; border:1px solid var(--line-strong); background:var(--paper); box-shadow:0 22px 56px rgba(15,12,9,.28); animation:dialogIn 220ms cubic-bezier(.2,.9,.3,1) both; }.dialog h2 { margin:0; font:700 22px/1.2 var(--font-serif); }.dialog p { margin:6px 0 16px; color:var(--muted); font-size:11px; }.field { margin-top:12px; }.field label { display:block; margin-bottom:6px; color:var(--muted); font-size:10px; font-weight:800; }.field input, .field textarea, .field select { width:100%; min-height:40px; padding:8px 10px; border:1px solid var(--line-strong); border-radius:0; background:#fffdf9; color:var(--ink); font-size:12px; }.field textarea { min-height:86px; resize:vertical; }.dialog-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }.secondary-button { min-height:38px; padding:0 12px; border:1px solid var(--line-strong); background:transparent; color:var(--muted); cursor:pointer; font-size:11px; font-weight:700; }
+    .agent-panel { position:fixed; right:20px; bottom:20px; z-index:60; display:flex; width:min(390px,calc(100% - 40px)); max-height:min(640px,calc(100dvh - 40px)); flex-direction:column; overflow:hidden; border:1px solid var(--line-strong); background:var(--paper); box-shadow:0 24px 64px rgba(30,25,20,.25); opacity:0; pointer-events:none; transform:translateY(16px) scale(.98); transition:opacity 220ms ease,transform 220ms ease; }.agent-panel.open { opacity:1; pointer-events:auto; transform:translateY(0) scale(1); }.agent-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:15px 16px; border-bottom:1px solid var(--line); background:var(--paper-soft); }.agent-head b { display:block; font-size:13px; }.agent-head small { display:block; margin-top:4px; color:var(--muted); font-size:10px; }.agent-close { display:grid; width:30px; height:30px; place-items:center; padding:0; border:1px solid var(--line); background:transparent; color:var(--ink); cursor:pointer; }.agent-messages { flex:1; min-height:240px; overflow:auto; padding:14px; }.bubble { width:fit-content; max-width:88%; margin:0 0 9px; padding:10px 11px; border:1px solid var(--line); background:var(--paper-soft); color:var(--ink); font-size:12px; line-height:1.55; animation:bubbleIn 170ms ease both; }.bubble.user { margin-left:auto; border-color:var(--accent); background:var(--accent-soft); }.agent-suggestions { display:flex; flex-wrap:wrap; gap:6px; padding:0 14px 10px; }.agent-suggestions button { padding:6px 8px; border:1px solid var(--line); background:var(--paper); color:var(--muted); cursor:pointer; font-size:10px; }.agent-compose { display:grid; grid-template-columns:minmax(0,1fr) 38px 38px; gap:6px; padding:12px; border-top:1px solid var(--line); }.agent-compose input { min-width:0; height:38px; padding:0 10px; border:1px solid var(--line-strong); border-radius:0; background:#fffdf9; }.agent-compose button { display:grid; height:38px; place-items:center; padding:0; border:1px solid var(--line-strong); background:var(--paper); color:var(--accent); cursor:pointer; }.agent-compose .listening { border-color:var(--accent); background:var(--accent-soft); animation:listenPulse 1s ease-in-out infinite; }.agent-launcher { position:fixed; right:20px; bottom:20px; z-index:50; display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; box-shadow:0 10px 24px rgba(173,68,62,.22); font-size:12px; font-weight:800; transition:transform 160ms ease,opacity 160ms ease; }.agent-launcher:hover { transform:translateY(-2px); }.agent-launcher.hidden { opacity:0; pointer-events:none; }.agent-launcher svg { width:17px; height:17px; }
+    .toast { position:fixed; left:50%; bottom:22px; z-index:100; display:flex; align-items:center; gap:7px; max-width:calc(100% - 34px); padding:11px 14px; border:1px solid rgba(255,255,255,.3); background:#2a2521; color:#fffaf1; box-shadow:0 16px 38px rgba(33,28,23,.25); font-size:12px; transform:translate(-50%,90px); transition:transform 220ms ease; }.toast.show { transform:translate(-50%,0); }.toast button { padding:0; border:0; background:transparent; color:#f2b8ae; cursor:pointer; font-size:11px; font-weight:800; }.stamp-pop { position:fixed; z-index:98; display:grid; width:82px; height:82px; place-items:center; border:2px solid var(--accent); color:var(--accent); background:rgba(251,248,241,.94); font-size:9px; font-weight:800; letter-spacing:.1em; text-align:center; pointer-events:none; animation:stampOut 760ms ease both; }
+    .welcome { position:fixed; z-index:150; inset:0; display:grid; place-items:center; padding:24px; background:var(--page); transition:opacity 320ms ease,visibility 320ms ease; }.welcome.hide { opacity:0; visibility:hidden; }.welcome-card { width:min(510px,100%); padding:30px; border:2px solid var(--accent); background:var(--paper); box-shadow:11px 11px 0 rgba(173,68,62,.16); text-align:left; animation:dialogIn 420ms cubic-bezier(.2,.9,.3,1) both; }.welcome-card .seal-large { display:grid; width:64px; height:64px; place-items:center; border:1px solid var(--accent); color:var(--accent); font:700 15px/1 var(--font-serif); transform:rotate(-8deg); }.welcome-card h2 { margin:21px 0 0; font:700 clamp(27px,5vw,42px)/1.14 var(--font-serif); }.welcome-card p { margin:12px 0 20px; color:var(--muted); font-size:13px; line-height:1.7; }.welcome-card .primary-button { min-height:43px; font-size:12px; }
+    .mobile-menu { display:none; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes dialogIn { from{opacity:0;transform:translateY(12px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes bubbleIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes listenPulse { 50%{box-shadow:0 0 0 6px rgba(173,68,62,.14)} }
+    @keyframes stampOut { 0%{opacity:0;transform:translate(-50%,-50%) scale(.7) rotate(-15deg)} 22%{opacity:1;transform:translate(-50%,-50%) scale(1.04) rotate(-8deg)} 100%{opacity:0;transform:translate(-50%,-72%) scale(1) rotate(-8deg)} }
+
+    /* The same interaction system can be tested with all four paper themes. */
+    .app[data-theme="blueprint"] { --page:#e4e8e8; --paper:#f6f9f8; --paper-soft:#edf4f4; --ink:#1d2e35; --muted:#62747a; --line:#b8c9cc; --line-strong:#8aa5ac; --accent:#3e7191; --accent-soft:#e4f0f1; --accent-ink:#315f7a; --blue:#3e7191; --blue-soft:#e9f2f3; --green:#32795d; --rail:#e2ecec; --rail-ink:#1d3a46; --rail-muted:#607980; --rail-line:#b7c8ca; --rail-hover:#d3e2e3; --rail-active:#c8dcde; --shadow:0 20px 48px rgba(44,69,73,.15); }
+    .app[data-theme="blueprint"] .main { background-color:#f6f9f8; background-image:linear-gradient(rgba(62,113,145,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(62,113,145,.065) 1px,transparent 1px); background-size:18px 18px; }.app[data-theme="blueprint"] .brief-card { border-width:1px; }.app[data-theme="blueprint"] .brief-card::after { content:"REV. 08 / 06"; position:absolute; right:18px; top:16px; color:var(--accent); font-size:9px; font-weight:800; letter-spacing:.12em; }.app[data-theme="blueprint"] .topbar h1 { font-family:var(--font-sans); }.app[data-theme="blueprint"] .paper-stamp { border-radius:50%; }
+    .app[data-theme="ledger"] { --page:#e9dfd0; --paper:#fbf5e9; --paper-soft:#f5ead7; --ink:#36291f; --muted:#7b6959; --line:#d8c9b4; --line-strong:#c0ab91; --accent:#8c613d; --accent-soft:#f5e6d2; --accent-ink:#705033; --blue:#765331; --blue-soft:#f6eee1; --green:#3f7751; --rail:#eee1cc; --rail-ink:#493421; --rail-muted:#806f5d; --rail-line:#d5c2aa; --rail-hover:#e6d4b9; --rail-active:#ddc9a8; --shadow:0 20px 48px rgba(72,50,28,.16); }.app[data-theme="ledger"] .brief-card { border-width:1px 1px 1px 4px; }.app[data-theme="ledger"] .topbar h1,.app[data-theme="ledger"] .brief-card h2 { font-family:var(--font-serif); }.app[data-theme="ledger"] .task-list { background-image:linear-gradient(transparent 26px,rgba(140,97,61,.11) 27px); background-size:100% 53px; }.app[data-theme="ledger"] .task-row { border-bottom-color:transparent; }.app[data-theme="ledger"] .paper-stamp { border-radius:50%; }
+    .app[data-theme="editorial"] { --page:#ecebe7; --paper:#fffdf9; --paper-soft:#f5f3ee; --ink:#171717; --muted:#6d6a65; --line:#d8d6d0; --line-strong:#94918b; --accent:#a83c39; --accent-soft:#f8e7e4; --accent-ink:#8a302e; --blue:#a83c39; --blue-soft:#f8e7e4; --green:#267858; --rail:#f4f2ed; --rail-ink:#1b1b1a; --rail-muted:#6c6a66; --rail-line:#d4d1ca; --rail-hover:#e8e5de; --rail-active:#dfdcd4; --shadow:0 20px 48px rgba(31,28,24,.13); }.app[data-theme="editorial"] .sidebar { border-right:2px solid var(--line-strong); }.app[data-theme="editorial"] .topbar { border-bottom-width:2px; }.app[data-theme="editorial"] .topbar h1 { font-size:29px; font-weight:830; }.app[data-theme="editorial"] .brief-card { border:1px solid var(--ink); border-top:4px solid var(--accent); }.app[data-theme="editorial"] .brief-card h2 { font-family:var(--font-sans); font-size:20px; }.app[data-theme="editorial"] .stat:first-child { border-color:var(--ink); background:var(--ink); }.app[data-theme="editorial"] .stat:first-child small,.app[data-theme="editorial"] .stat:first-child b { color:#fff; }.app[data-theme="editorial"] .stat:first-child b em { color:#f0a6a0; }.app[data-theme="editorial"] .main-button { border-radius:0; }
+
+    @media(max-width:1050px) { .app { grid-template-columns:188px minmax(0,1fr); }.main { padding:21px; }.overview,.dashboard-grid,.finance-grid,.learning-grid { grid-template-columns:1fr; }.stats { grid-template-columns:repeat(4,minmax(0,1fr)); }.right-stack { grid-template-columns:1fr 1fr; }.growth-card { min-height:150px; } }
+    @media(max-width:720px) { .app { width:min(100% - 22px,1480px); display:block; min-height:calc(100dvh - 22px); margin:11px auto; }.sidebar { display:none; }.main { padding:15px 12px 18px; }.mobile-menu { display:inline-grid; }.topbar { align-items:flex-start; padding-bottom:13px; }.topbar > div:first-child { min-width:0; flex:1; }.topbar h1 { font-size:21px !important; }.actions { flex:0 0 auto; }.actions .outline-button,.theme-select { display:none; }.primary-button { padding:0 9px; }.topbar #createPrimary { width:38px; padding:0; }.topbar #createPrimary #createLabel { display:none; }.overview { gap:11px; margin-top:12px; }.brief-card { min-height:140px; padding:15px; }.brief-card h2 { font-size:17px !important; }.stats { grid-template-columns:repeat(2,minmax(0,1fr)); }.dashboard-grid,.right-stack,.finance-grid,.learning-grid { gap:11px; margin-top:11px; }.right-stack { grid-template-columns:1fr; }.task-row { grid-template-columns:20px minmax(0,1fr) auto; }.row-actions .mini-button:first-child { display:none; }.news-brief b { font-size:11px; }.habit-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.word-grid,.review-grid { grid-template-columns:1fr; }.english-phrase { align-items:flex-start; flex-direction:column; }.summary-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }.module-toolbar { align-items:flex-start; flex-direction:column; }.agent-panel { right:11px; bottom:11px; width:calc(100% - 22px); max-height:calc(100dvh - 22px); }.agent-launcher { right:21px; bottom:21px; }.backdrop { padding:11px; }.dialog { padding:19px; }.mobile-drawer { position:fixed; z-index:80; inset:0 auto 0 0; display:flex; width:min(285px,85vw); transform:translateX(-100%); transition:transform 220ms ease; }.mobile-drawer.open { transform:translateX(0); }.mobile-scrim { position:fixed; z-index:75; inset:0; display:none; background:rgba(21,18,15,.42); }.mobile-scrim.open { display:block; }.mobile-drawer .sidebar { display:flex; width:100%; }.welcome-card { padding:24px; } }
+    /* Full-screen drawer navigation and creator workflow extensions. */
+    .app { display:block; }
+    #sidebar { display:none; }
+    .mobile-menu { display:inline-grid; }
+    .mobile-drawer { position:fixed; z-index:80; inset:0 auto 0 0; display:flex; width:min(304px,84vw); overflow:hidden; transform:translateX(-104%); transition:transform 240ms cubic-bezier(.2,.88,.28,1); box-shadow:18px 0 44px rgba(29,24,20,.22); }
+    .mobile-drawer.open { transform:translateX(0); }
+    .mobile-drawer .sidebar { display:flex; width:100%; border-right:0; }
+    .mobile-scrim { position:fixed; z-index:75; inset:0; display:block; background:rgba(21,18,15,.42); opacity:0; pointer-events:none; transition:opacity 180ms ease; }
+    .mobile-scrim.open { opacity:1; pointer-events:auto; }
+    .drawer-close { display:grid; width:28px; height:28px; margin-left:auto; place-items:center; padding:0; border:1px solid var(--rail-line); background:transparent; color:var(--rail-ink); cursor:pointer; }
+    .drawer-close svg { width:15px; height:15px; }
+    .press-feedback { transform:scale(.975) !important; }
+    .content-enter > * { animation:contentIn 230ms cubic-bezier(.2,.82,.32,1) both; }
+    .content-enter > *:nth-child(2) { animation-delay:34ms; }
+    .content-enter > *:nth-child(3) { animation-delay:68ms; }
+
+    .creator-brief { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(205px,.55fr); gap:16px; padding:19px; border:1px solid var(--line-strong); background:var(--paper-soft); }
+    .creator-brief h2 { margin:0; font:700 21px/1.3 var(--font-serif); }
+    .creator-brief p { max-width:670px; margin:8px 0 0; color:var(--muted); font-size:11px; line-height:1.65; }
+    .creator-brief-side { display:grid; align-content:start; gap:8px; padding-left:16px; border-left:1px solid var(--line); }
+    .creator-brief-side small { color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.08em; }
+    .creator-brief-side b { font-size:17px; line-height:1.25; }
+    .creator-brief-side span { color:var(--green); font-size:10px; font-weight:800; }
+    .creator-tabs { display:flex; gap:0; margin:15px 0; border-bottom:1px solid var(--line-strong); }
+    .creator-tabs button { position:relative; min-height:38px; padding:0 13px; border:0; background:transparent; color:var(--muted); cursor:pointer; font-size:11px; font-weight:800; }
+    .creator-tabs button::after { content:""; position:absolute; right:12px; bottom:-1px; left:12px; height:2px; background:transparent; transition:background 160ms ease,transform 160ms ease; transform:scaleX(.45); }
+    .creator-tabs button.active { color:var(--accent); }
+    .creator-tabs button.active::after { background:var(--accent); transform:scaleX(1); }
+    .creator-grid { display:grid; grid-template-columns:minmax(0,1.42fr) minmax(245px,.7fr); gap:15px; }
+    .creator-note { padding:17px; border:1px solid var(--line); background:var(--paper-soft); }
+    .creator-note h3 { margin:0; font-size:13px; }
+    .creator-note p { margin:9px 0 0; color:var(--muted); font-size:11px; line-height:1.6; }
+    .creator-note ul { display:grid; gap:8px; margin:15px 0 0; padding:0; list-style:none; }
+    .creator-note li { display:flex; gap:8px; color:var(--muted); font-size:10px; line-height:1.5; }
+    .creator-note li i { flex:0 0 auto; color:var(--accent); }
+    .creator-note li svg { width:14px; height:14px; }
+    .clip-list,.draft-list,.queue-list { display:grid; gap:8px; }
+    .clip-record { display:grid; grid-template-columns:34px minmax(0,1fr) auto; align-items:start; gap:12px; padding:14px 15px; border:1px solid var(--line); background:var(--paper); }
+    .clip-record-icon { display:grid; width:32px; height:32px; place-items:center; border:1px solid var(--line-strong); color:var(--blue); }
+    .clip-record-icon svg { width:16px; height:16px; }
+    .clip-copy b { display:block; font-size:12px; line-height:1.5; }
+    .clip-copy p { margin:5px 0 0; color:var(--muted); font-size:10px; line-height:1.55; }
+    .clip-copy a { display:inline-block; margin-top:6px; color:var(--blue); font-size:10px; font-weight:800; text-decoration:none; }
+    .clip-meta { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+    .clip-meta span,.status-chip { display:inline-flex; align-items:center; min-height:20px; padding:0 6px; border:1px solid var(--line); color:var(--muted); font-size:9px; font-weight:800; }
+    .status-chip { border-color:rgba(43,126,91,.35); background:#f2f8f4; color:var(--green); }
+    .status-chip.waiting { border-color:rgba(168,110,45,.38); background:#fcf5e9; color:var(--amber); }
+    .workshop-sheet { padding:18px; border:2px solid var(--accent); background:var(--paper); }
+    .workshop-sheet h3 { margin:0; font:700 18px/1.35 var(--font-serif); }
+    .workshop-sheet p { margin:8px 0 16px; color:var(--muted); font-size:11px; line-height:1.6; }
+    .draft-sheet { padding:16px; border:1px solid var(--line); background:var(--paper); }
+    .draft-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+    .draft-head h3 { margin:0; font-size:14px; line-height:1.45; }
+    .draft-head small { display:block; margin-top:5px; color:var(--muted); font-size:10px; }
+    .draft-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:12px; }
+    .draft-block { padding:10px; border-left:2px solid var(--line-strong); background:var(--paper-soft); }
+    .draft-block.wide { grid-column:1 / -1; }
+    .draft-block small { display:block; color:var(--accent); font-size:9px; font-weight:800; letter-spacing:.08em; }
+    .draft-block p { margin:6px 0 0; color:var(--ink); font-size:11px; line-height:1.65; white-space:pre-line; }
+    .draft-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:13px; }
+    .queue-row { display:grid; grid-template-columns:38px minmax(0,1fr) auto; align-items:center; gap:11px; padding:13px 14px; border:1px solid var(--line); background:var(--paper); }
+    .queue-no { display:grid; width:29px; height:29px; place-items:center; border:1px solid var(--line-strong); color:var(--accent); font-size:10px; font-weight:800; }
+    .queue-copy b { display:block; font-size:12px; line-height:1.4; }
+    .queue-copy small { display:block; margin-top:4px; color:var(--muted); font-size:10px; }
+    .ai-review-sheet { margin-top:15px; padding:17px; border:2px solid var(--blue); background:var(--blue-soft); }
+    .ai-review-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding-bottom:12px; border-bottom:1px solid rgba(53,109,141,.25); }
+    .ai-review-head h2 { margin:0; font-size:15px; }
+    .ai-review-head p { margin:5px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
+    .ai-review-grid { display:grid; grid-template-columns:1.12fr 1fr 1fr; gap:10px; margin-top:13px; }
+    .ai-review-block { padding:11px; border:1px solid rgba(53,109,141,.28); background:rgba(255,255,255,.52); }
+    .ai-review-block h3 { margin:0; color:var(--blue); font-size:11px; }
+    .ai-review-block p { margin:8px 0 0; font-size:11px; line-height:1.62; }
+    .ai-review-block ol,.ai-review-block ul { display:grid; gap:7px; margin:8px 0 0; padding-left:18px; color:var(--ink); font-size:10px; line-height:1.55; }
+    .review-empty { display:grid; min-height:140px; place-items:center; margin-top:13px; padding:22px; border:1px dashed rgba(53,109,141,.45); color:var(--muted); text-align:center; font-size:11px; }
+    .dialog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .dialog-grid .field { min-width:0; }
+    @keyframes contentIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    @media(max-width:720px) {
+      .mobile-drawer { width:min(292px,86vw); }
+      .creator-brief,.creator-grid,.draft-grid,.ai-review-grid { grid-template-columns:1fr; }
+      .creator-brief-side { padding:12px 0 0; border-top:1px solid var(--line); border-left:0; }
+      .creator-tabs { overflow-x:auto; }
+      .creator-tabs button { flex:0 0 auto; white-space:nowrap; }
+      .clip-record,.queue-row { grid-template-columns:32px minmax(0,1fr); }
+      .clip-record .row-actions,.queue-row .row-actions { grid-column:2; justify-content:flex-start; }
+      .draft-head,.ai-review-head { flex-direction:column; }
+      .dialog-grid { grid-template-columns:1fr; gap:0; }
+    }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:1ms !important; transition-duration:1ms !important; } }
+  </style>
+</head>
+<body>
+  <section class="welcome" id="welcome" aria-label="欢迎页">
+    <div class="welcome-card"><div class="seal-large">DD</div><h2>欢迎来到你的生活工作台</h2><p>今天的待办、收支、学习与复盘，都从这一页开始归档。每完成一件事，都会留下一个看得见的推进记录。</p><button class="primary-button" id="enterDesk" type="button"><i data-lucide="book-open"></i>翻开今日工作簿</button></div>
+  </section>
+
+  <div class="app" id="app" data-theme="archive">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+      <header class="topbar"><div><p class="eyebrow" id="pageEyebrow">OVERVIEW / TODAY</p><h1 id="pageTitle">今天，先处理真正重要的事。</h1></div><div class="actions"><button class="icon-button mobile-menu" id="mobileMenu" type="button" aria-label="打开功能导航" title="打开功能导航"><i data-lucide="menu"></i></button><select class="theme-select" id="themeSelect" aria-label="切换纸张风格"><option value="archive">档案纸</option><option value="blueprint">蓝图纸</option><option value="ledger">账本纸</option><option value="editorial">编辑纸</option></select><button class="icon-button" id="soundToggle" type="button" aria-label="关闭点击声音" title="关闭点击声音" aria-pressed="true"><i data-lucide="volume-2"></i></button><button class="icon-button" id="notifications" type="button" aria-label="查看通知" title="查看通知"><i data-lucide="bell"></i></button><button class="outline-button" id="agentTop" type="button"><i data-lucide="bot"></i>问问 Agent</button><button class="primary-button" id="createPrimary" type="button" aria-label="新增任务"><i data-lucide="plus"></i><span id="createLabel">新增任务</span></button></div></header>
+      <div id="content" aria-live="polite"></div>
+    </main>
+  </div>
+  <div class="mobile-scrim" id="mobileScrim"></div>
+  <aside class="mobile-drawer" id="mobileDrawer" aria-label="工作台功能导航"></aside>
+
+  <button class="agent-launcher" id="agentLauncher" type="button"><i data-lucide="bot"></i>小橘 Agent</button>
+  <aside class="agent-panel" id="agentPanel" aria-label="小橘 Agent 对话"><header class="agent-head"><div><b>小橘 Agent</b><small id="voiceHint">工作台助手 · 可文字或语音输入</small></div><button class="agent-close" id="agentClose" type="button" aria-label="关闭 Agent"><i data-lucide="x"></i></button></header><div class="agent-messages" id="agentMessages"><div class="bubble">你好，我可以帮你打开栏目、查看未完成任务、整理内容灵感，或者开始每日复盘。</div></div><div class="agent-suggestions"><button type="button" data-agent-prompt="今天有什么任务">查看任务</button><button type="button" data-agent-prompt="打开内容创作">内容创作</button><button type="button" data-agent-prompt="帮我做每日复盘">每日复盘</button></div><form class="agent-compose" id="agentForm"><input id="agentInput" autocomplete="off" placeholder="输入指令，例如：帮我做一个选题"><button id="voiceButton" type="button" aria-label="语音输入"><i data-lucide="mic"></i></button><button type="submit" aria-label="发送"><i data-lucide="arrow-up"></i></button></form></aside>
+
+  <div class="backdrop" id="entryBackdrop"><form class="dialog" id="entryForm"><h2 id="dialogTitle">新增任务</h2><p id="dialogCopy">记录一项明确、可执行的下一步。</p><input id="entryId" type="hidden"><div class="field"><label for="entryTitle">内容</label><input id="entryTitle" maxlength="80" required placeholder="例如：完成本周工作计划"></div><div class="field"><label for="entryMeta">补充信息</label><input id="entryMeta" maxlength="100" placeholder="时间、分类、备注或金额"></div><div class="field amount-field" id="amountField"><label for="entryAmount">金额（可选）</label><input id="entryAmount" inputmode="decimal" type="number" step="0.01" placeholder="收入填正数，支出填负数"></div><div class="dialog-actions"><button class="secondary-button" type="button" data-close-dialog>取消</button><button class="primary-button" type="submit">保存记录</button></div></form></div>
+  <div class="backdrop" id="profileBackdrop"><form class="dialog" id="profileForm"><h2>个人档案</h2><p>这份档案会同步到工作台的欢迎语和成长记录。</p><div class="field"><label for="profileName">称呼</label><input id="profileName" maxlength="20" required></div><div class="field"><label for="profileRole">身份标签</label><input id="profileRole" maxlength="30"></div><div class="field"><label for="profileMotto">一句提醒</label><textarea id="profileMotto" maxlength="90"></textarea></div><div class="dialog-actions"><button class="secondary-button" type="button" data-close-profile>取消</button><button class="primary-button" type="submit">保存档案</button></div></form></div>
+  <div class="backdrop" id="clipBackdrop"><form class="dialog" id="clipForm"><h2 id="clipDialogTitle">归档内容样本</h2><p>保存公开链接、你看到的钩子和可复用的表达。平台数据与自动抓取需要后续授权接口。</p><input id="clipId" type="hidden"><div class="dialog-grid"><div class="field"><label for="clipPlatform">来源平台</label><select id="clipPlatform"><option>抖音</option><option>小红书</option><option>B 站</option><option>视频号</option><option>其他</option></select></div><div class="field"><label for="clipStatus">当前状态</label><select id="clipStatus"><option>待拆解</option><option>已拆解</option><option>可复用</option></select></div></div><div class="field"><label for="clipTitle">内容标题或账号</label><input id="clipTitle" maxlength="100" required placeholder="例如：3 个让自媒体效率翻倍的工作习惯"></div><div class="field"><label for="clipUrl">公开链接（可选）</label><input id="clipUrl" type="url" maxlength="300" placeholder="粘贴公开视频链接，仅用于自己归档"></div><div class="field"><label for="clipNote">值得拆解的地方</label><textarea id="clipNote" maxlength="360" placeholder="前三秒怎么开场、标题为什么有效、我准备怎么借鉴"></textarea></div><div class="dialog-actions"><button class="secondary-button" type="button" data-close-clip>取消</button><button class="primary-button" type="submit">保存样本</button></div></form></div>
+  <div class="backdrop" id="draftBackdrop"><form class="dialog" id="draftForm"><h2 id="draftDialogTitle">从灵感生成创作草稿</h2><p id="draftDialogCopy">填写一个想法，系统会按内容生产结构生成选题、钩子、脚本和发布文案。生成结果可继续编辑。</p><input id="draftId" type="hidden"><div class="field"><label for="draftIdea">灵感、视频观点或参考内容</label><textarea id="draftIdea" maxlength="500" required placeholder="例如：很多人做自媒体不是没灵感，而是收藏太多却没把灵感变成下一步动作。"></textarea></div><div class="dialog-grid"><div class="field"><label for="draftPlatform">发布平台</label><select id="draftPlatform"><option>抖音</option><option>小红书</option><option>视频号</option><option>B 站</option></select></div><div class="field"><label for="draftStyle">表达方式</label><select id="draftStyle"><option>真实经验分享</option><option>清单干货</option><option>反差观点</option><option>案例拆解</option></select></div></div><div class="field"><label for="draftAudience">目标读者（可选）</label><input id="draftAudience" maxlength="80" placeholder="例如：想提高效率的上班族和新手自媒体人"></div><div class="dialog-actions"><button class="secondary-button" type="button" data-close-draft>取消</button><button class="primary-button" type="submit" id="draftSubmit">生成创作草稿</button></div></form></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="./live-content-skill.js"></script>
+  <script>
+    (() => {
+      const storageKey = 'paper-office-workbench-v1';
+      const today = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+      const defaults = {
+        theme: 'archive',
+        profile: { name: '你的名字', role: '个人工作台', motto: '把重要的事留在纸面上。' },
+        tasks: [
+          { id: 'task-1', title: '整理本周工作计划', meta: '工作 · 30 分钟', done: true },
+          { id: 'task-2', title: '完成英语跟读练习', meta: '学习 · 15 分钟', done: false },
+          { id: 'task-3', title: '记录一笔今日收支', meta: '生活 · 3 分钟', done: false },
+          { id: 'task-4', title: '查看 AI 行业快讯', meta: '输入 · 10 分钟', done: true },
+          { id: 'task-5', title: '晨间体重记录', meta: '健康 · 1 分钟', done: true }
+        ],
+        habits: [
+          { id: 'habit-1', title: '喝水', meta: '今日已完成', done: true, icon: 'glass-water' },
+          { id: 'habit-2', title: '阅读', meta: '阅读 20 分钟', done: true, icon: 'book-open' },
+          { id: 'habit-3', title: '运动', meta: '等待打卡', done: false, icon: 'dumbbell' },
+          { id: 'habit-4', title: '早睡', meta: '今晚 23:00 前', done: false, icon: 'moon' }
+        ],
+        modules: {
+          2: [
+            { id: 'money-1', title: '工资', meta: '收入 · 本月', amount: 8000 },
+            { id: 'money-2', title: '午餐', meta: '餐饮 · 今天 12:30', amount: -32 },
+            { id: 'money-3', title: '咖啡', meta: '餐饮 · 今天 09:20', amount: -18 }
+          ],
+          3: [
+            { id: 'news-1', title: 'Agent 工作流正在从演示走向可交付的业务工具', meta: 'OpenAI · 12 分钟前', summary: '关注 Agent 的安全、评估与人工介入，正在成为真实产品的基础能力。', source: 'AI NEWS', url: 'https://openai.com/' },
+            { id: 'news-2', title: '把每日任务拆成下一步，会明显降低启动阻力', meta: 'Productivity · 1 小时前', summary: '短小、可执行的下一步，比抽象的目标更容易被完成。', source: 'WORKFLOW', url: 'https://www.nngroup.com/' }
+          ],
+          5: [
+            { id: 'idea-1', title: '把周报做成一张可回看的个人经营表', meta: '产品灵感 · 今天 10:20' },
+            { id: 'idea-2', title: '给每条灵感加一个“下一步动作”', meta: '工作方法 · 昨晚 22:16' }
+          ],
+          6: [
+            { id: 'learn-1', title: '学习 JavaScript DOM 事件', meta: '前端基础 · 45 分钟 · 进度 60%', done: false },
+            { id: 'learn-2', title: '阅读《设计心理学》第 3 章', meta: '产品设计 · 30 分钟 · 进度 35%', done: false },
+            { id: 'learn-3', title: '完成一节 AI Agent 课程', meta: 'AI 学习 · 60 分钟 · 未开始', done: false }
+          ],
+          7: [
+            { id: 'english-1', title: 'serendipity', meta: '意外发现美好事物的运气', detail: 'Try to use it in a sentence today.', done: true },
+            { id: 'english-2', title: 'Take it one step at a time.', meta: '一步一步来', detail: '今日跟读句子', done: false },
+            { id: 'english-3', title: 'progress', meta: '进步；进展', detail: 'Small progress is still progress.', done: false }
+          ],
+          8: [
+            { id: 'weight-1', title: '62.4 kg', meta: '今天 07:30 · 较上次 -0.3 kg' },
+            { id: 'weight-2', title: '62.7 kg', meta: '昨天 07:20 · 晨起空腹' },
+            { id: 'weight-3', title: '62.8 kg', meta: '8 月 4 日 · 晨起空腹' }
+          ],
+          9: [
+            { id: 'review-good', title: '今天做得好的事', meta: '完成了视觉试版，也留出了整理时间。' },
+            { id: 'review-better', title: '今天可以改进的事', meta: '下午减少无目的刷手机的时间。' },
+            { id: 'review-next', title: '明天最重要的一件事', meta: '完成工作台移动端的交互检查。' }
+          ]
+        },
+        growth: { water: 4, archives: 3 },
+        live: { newsUpdatedAt: 0, wordsUpdatedAt: 0 },
+        creator: {
+          activeTab: 'radar',
+          clips: [
+            { id: 'clip-1', platform: '抖音', title: '为什么上班族做自媒体，总是卡在“有灵感但发不出来”？', url: '', note: '开头用真实痛点拉住人，后半段把问题拆成可以执行的动作。', status: '已拆解', createdAt: '今天 09:40' },
+            { id: 'clip-2', platform: '小红书', title: '一张个人工作台，收住待办、灵感和复盘', url: '', note: '记录「界面展示 + 使用前后对比」的叙事顺序，适合转成自己的工作流内容。', status: '待拆解', createdAt: '昨天 21:12' }
+          ],
+          drafts: [
+            { id: 'draft-1', idea: '把收藏的灵感变成能够发布的内容，而不是继续堆在收藏夹里。', platform: '抖音', style: '真实经验分享', audience: '想提高效率的上班族和新手自媒体人', title: '我把收藏夹变成内容生产线后，终于不再卡在“没灵感”', hook: '你不是没有灵感，你只是少了把灵感推进到下一步的工作流。', outline: '先说收藏夹越堆越多的真实困境；再展示内容雷达如何收集链接和笔记；最后给出“收藏、拆解、生成、发布”四步法。', script: '以前我以为自己做不出内容，是因为没有灵感。后来才发现，问题是每条灵感都只停在收藏夹里。现在我会先把参考内容放进雷达，写下它为什么值得看，再把自己的观点变成一个选题。这样每次打开工作台，都知道下一步该做什么。', caption: '做内容最容易累的，不是拍和写，而是每次都从“我今天发什么”开始想。\n\n我把灵感、参考视频和发布草稿放进一个工作流里：先收集，再拆解，再生成第一版。不是为了让内容变得标准，而是让每次创作都有一个可以开始的入口。', tags: '#自媒体工作流 #上班族副业 #内容创作 #效率工具 #AI工作台', status: '待制作', updatedAt: '今天 10:05' }
+          ]
+        },
+        aiReview: { generatedAt: 0, summary: '', tomorrow: [], suggestions: [] },
+        preferences: { soundEnabled: true }
+      };
+      let stored = null;
+      try { stored = JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch (_) {}
+      const state = {
+        ...defaults,
+        ...stored,
+        profile: { ...defaults.profile, ...(stored?.profile || {}) },
+        modules: { ...defaults.modules, ...(stored?.modules || {}) },
+        growth: { ...defaults.growth, ...(stored?.growth || {}) },
+        live: { ...defaults.live, ...(stored?.live || {}) },
+        creator: {
+          ...defaults.creator,
+          ...(stored?.creator || {}),
+          clips: Array.isArray(stored?.creator?.clips) ? stored.creator.clips : defaults.creator.clips,
+          drafts: Array.isArray(stored?.creator?.drafts) ? stored.creator.drafts : defaults.creator.drafts
+        },
+        aiReview: { ...defaults.aiReview, ...(stored?.aiReview || {}) },
+        preferences: { ...defaults.preferences, ...(stored?.preferences || {}) }
+      };
+      let active = 0;
+      let editing = null;
+      let voiceRecognition = null;
+      let listening = false;
+      let toastTimer = null;
+      let deletedRecord = null;
+      let clipEditingIndex = -1;
+      let draftEditingIndex = -1;
+      let audioContext = null;
+      let lastSoundAt = 0;
+
+      const app = document.getElementById('app');
+      const sidebar = document.getElementById('sidebar');
+      const mobileDrawer = document.getElementById('mobileDrawer');
+      const mobileScrim = document.getElementById('mobileScrim');
+      const content = document.getElementById('content');
+      const title = document.getElementById('pageTitle');
+      const eyebrow = document.getElementById('pageEyebrow');
+      const createLabel = document.getElementById('createLabel');
+      const entryBackdrop = document.getElementById('entryBackdrop');
+      const profileBackdrop = document.getElementById('profileBackdrop');
+      const clipBackdrop = document.getElementById('clipBackdrop');
+      const draftBackdrop = document.getElementById('draftBackdrop');
+      const toast = document.getElementById('toast');
+      const liveSkill = window.DailyTownLiveSkill;
+      const navItems = [
+        ['layout-dashboard', '总览'], ['check-square', '今日待办'], ['wallet-cards', '收支记账'], ['newspaper', '每日 AI 新闻'], ['sprout', '习惯打卡'], ['clapperboard', '内容创作'], ['book-open-check', '学习计划'], ['languages', '英语练习'], ['scale', '体重记录'], ['notebook-pen', '每日复盘']
+      ];
+      const moduleMeta = {
+        1: { subtitle: 'TASKS / TODAY', title: '今日待办', action: '新增任务', helper: '把任务写得足够小，下一步才会真正发生。' },
+        2: { subtitle: 'LEDGER / AUGUST', title: '收支记账', action: '记一笔', helper: '记录不是约束，而是让钱的去向变得清楚。' },
+        3: { subtitle: 'AI NEWS / LIVE', title: '每日 AI 新闻', action: '收藏新闻', helper: '每天精读一条，并写下一句“这和我有什么关系”。' },
+        4: { subtitle: 'HABITS / TODAY', title: '习惯打卡', action: '新增习惯', helper: '从小到不可能失败的动作开始。' },
+        5: { subtitle: 'CREATOR / WORKFLOW', title: '内容创作', action: '记录灵感', helper: '从参考内容、一个念头到可发布的脚本，让创作不再从空白开始。' },
+        6: { subtitle: 'LEARNING / PLAN', title: '学习计划', action: '新计划', helper: '学习后写一句输出，形成学习、练习、复述的闭环。' },
+        7: { subtitle: 'ENGLISH / DAILY', title: '英语练习', action: '新练习', helper: '单词、句子和跟读都应该留下一次完成记录。' },
+        8: { subtitle: 'HEALTH / TREND', title: '体重记录', action: '记体重', helper: '关注 7 日平均，而不是单日波动。' },
+        9: { subtitle: 'REVIEW / TODAY', title: '每日复盘', action: '保存复盘', helper: '三分钟也足够看清今天，并安排明天。' }
+      };
+
+      function escapeHtml(value) { const item = document.createElement('div'); item.textContent = String(value ?? ''); return item.innerHTML; }
+      function id() { return `${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+      function save() { localStorage.setItem(storageKey, JSON.stringify(state)); }
+      function icon(name) { return `<i data-lucide="${name}"></i>`; }
+      function refreshIcons() { if (window.lucide) window.lucide.createIcons({ attrs: { 'stroke-width': 1.8 } }); }
+      function showToast(message, undo = false) {
+        toast.innerHTML = `${icon('check-circle-2')}<span>${escapeHtml(message)}</span>${undo ? '<button type="button" data-undo>撤销</button>' : ''}`;
+        refreshIcons();
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+      }
+      function playTapSound(kind = 'tap') {
+        if (state.preferences.soundEnabled === false) return;
+        const eventTime = performance.now();
+        if (eventTime - lastSoundAt < 90) return;
+        lastSoundAt = eventTime;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        try {
+          audioContext = audioContext || new AudioContextClass();
+          if (audioContext.state === 'suspended') audioContext.resume();
+          const oscillator = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          const now = audioContext.currentTime;
+          const isSuccess = kind === 'success';
+          oscillator.type = isSuccess ? 'triangle' : 'sine';
+          oscillator.frequency.setValueAtTime(isSuccess ? 650 : 430, now);
+          oscillator.frequency.exponentialRampToValueAtTime(isSuccess ? 910 : 350, now + (isSuccess ? .075 : .045));
+          gain.gain.setValueAtTime(.001, now);
+          gain.gain.exponentialRampToValueAtTime(isSuccess ? .026 : .015, now + .008);
+          gain.gain.exponentialRampToValueAtTime(.001, now + (isSuccess ? .11 : .065));
+          oscillator.connect(gain).connect(audioContext.destination);
+          oscillator.start(now);
+          oscillator.stop(now + (isSuccess ? .12 : .075));
+        } catch (_) {}
+      }
+      function stamp(target, text = '已归档\nTODAY') {
+        const rect = target?.getBoundingClientRect() || { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
+        const node = document.createElement('div');
+        node.className = 'stamp-pop';
+        node.style.left = `${rect.left + rect.width / 2}px`;
+        node.style.top = `${rect.top + rect.height / 2}px`;
+        node.textContent = text;
+        document.body.appendChild(node);
+        setTimeout(() => node.remove(), 800);
+      }
+      function getTasksDone() { return state.tasks.filter(item => item.done).length; }
+      function growthStage() { return Math.min(3, Math.floor(state.growth.water / 3)); }
+      function renderNav(target) {
+        const drawerClose = target === mobileDrawer ? `<button class="drawer-close" type="button" data-close-nav aria-label="关闭导航" title="关闭导航">${icon('x')}</button>` : '';
+        const markup = `<div class="brand"><span class="brand-mark">DD</span><span>Daily Desk</span>${drawerClose}</div><p class="nav-kicker">WORKSPACE</p><nav class="main-nav" aria-label="工作台导航">${navItems.map(([name,label], index) => `<button type="button" class="${active === index ? 'active' : ''}" data-nav="${index}">${icon(name)}${label}</button>`).join('')}</nav><button class="profile-trigger" type="button" data-profile><small>${escapeHtml(state.profile.role)}</small><b>${escapeHtml(state.profile.name)} · 个人档案</b><div class="profile-track"><i style="width:${Math.min(100, state.growth.archives * 12)}%"></i></div></button>`;
+        target.innerHTML = target === mobileDrawer ? `<aside class="sidebar">${markup}</aside>` : markup;
+      }
+      function syncNav() { renderNav(sidebar); renderNav(mobileDrawer); refreshIcons(); }
+      function renderShell() {
+        app.dataset.theme = state.theme || 'archive';
+        document.getElementById('themeSelect').value = state.theme || 'archive';
+        const soundToggle = document.getElementById('soundToggle');
+        const soundEnabled = state.preferences.soundEnabled !== false;
+        soundToggle.setAttribute('aria-pressed', String(soundEnabled));
+        soundToggle.setAttribute('aria-label', soundEnabled ? '关闭点击声音' : '开启点击声音');
+        soundToggle.title = soundEnabled ? '关闭点击声音' : '开启点击声音';
+        soundToggle.innerHTML = icon(soundEnabled ? 'volume-2' : 'volume-x');
+        syncNav();
+        const meta = active === 0 ? null : moduleMeta[active];
+        eyebrow.textContent = meta ? meta.subtitle : `OVERVIEW / ${today.toUpperCase()}`;
+        title.textContent = meta ? meta.title : `今天，先处理真正重要的事。`;
+        createLabel.textContent = active === 5 ? '生成草稿' : (meta ? meta.action : '新增任务');
+      }
+      function animateContent() {
+        content.classList.remove('content-enter');
+        void content.offsetWidth;
+        content.classList.add('content-enter');
+      }
+      function renderDashboard() {
+        const done = getTasksDone();
+        const percent = Math.round(done / Math.max(1, state.tasks.length) * 100);
+        const balance = state.modules[2].reduce((sum, item) => sum + Number(item.amount || 0), 0);
+        const news = state.modules[3].slice(0, 2);
+        const nextDraft = (state.creator.drafts || []).find(item => item.status !== '已发布') || state.creator.drafts?.[0];
+        content.innerHTML = `<section class="overview"><article class="brief-card"><h2>${escapeHtml(state.profile.name)}，今天有 ${state.tasks.length - done} 件待完成事项，先完成其中一件就算推进。</h2><p>${escapeHtml(state.profile.motto)}</p><div class="progress-line"><div class="line"><i style="width:${percent}%"></i></div><b>${done} / ${state.tasks.length} 已完成</b></div><span class="paper-stamp" id="todayStamp">推进\n${state.growth.archives} 条</span></article><div class="stats"><article class="stat"><small>待完成</small><b>${state.tasks.length - done} <em>优先</em></b></article><article class="stat"><small>本月结余</small><b>¥ ${balance.toLocaleString('zh-CN')}</b></article><article class="stat"><small>连续习惯</small><b class="green">${state.habits.filter(item => item.done).length * 3 + 3} <em>天</em></b></article><article class="stat"><small>成长浇水</small><b>${state.growth.water} <em>次</em></b></article></div></section><section class="dashboard-grid"><article class="panel"><header class="panel-head"><h2>今日待办</h2><button class="text-button" type="button" data-nav="1">查看全部</button></header><div class="task-list">${state.tasks.map((item,index) => taskRow(item, index)).join('')}</div></article><div class="right-stack"><article class="panel"><header class="panel-head"><h3>今日节奏</h3><button class="text-button" type="button" data-toast="日历视图会在正式版本接入">日历</button></header><div class="agenda"><div class="agenda-row"><time>10:00</time><div><b>产品设计复盘</b><small>45 分钟 · 深度工作</small></div></div><div class="agenda-row"><time>15:30</time><div><b>完成英语练习</b><small>15 分钟 · 自主学习</small></div></div><div class="agenda-row"><time>21:30</time><div><b>每日复盘</b><small>3 分钟 · 记录</small></div></div></div></article><article class="panel"><header class="panel-head"><h3>内容推进</h3><button class="text-button" type="button" data-nav="5">进入工坊</button></header><div class="agenda"><div class="agenda-row"><time>创作</time><div><b>${escapeHtml(nextDraft?.title || '归档一条参考内容')}</b><small>${escapeHtml(nextDraft ? `${nextDraft.status || '待制作'} · 把它推进一个状态` : '内容雷达 → 灵感工坊 → 发布队列')}</small></div></div></div></article><article class="panel"><header class="panel-head"><h3>AI 新闻速览</h3><button class="text-button" type="button" data-nav="3">刷新</button></header><div class="news-brief">${news.map(item => `<button type="button" data-nav="3"><span>${escapeHtml(item.source || 'AI NEWS')}</span><b>${escapeHtml(item.title)}</b></button>`).join('')}</div></article><article class="panel growth-card"><h3>桌面成长植物</h3><p>每完成一项可勾选任务，系统会归档一次推进，并为桌边植物浇水。</p><button type="button" data-nav="4">查看今日习惯 →</button><div class="plant" data-stage="${growthStage()}"><i class="stem"></i><i class="leaf one"></i><i class="leaf two"></i><i class="leaf three"></i><i class="pot"></i></div></article></div></section><footer class="status-bar"><span><i class="status-dot"></i>数据已自动保存 · 本地记录正常</span><b>每一次完成，都会成为长期趋势</b></footer>`;
+        refreshIcons();
+      }
+      function taskRow(item, index, compact = false) {
+        return `<div class="task-row ${item.done ? 'done' : ''}"><button class="check" type="button" data-toggle-task="${index}" aria-label="${item.done ? '已完成' : '完成'}：${escapeHtml(item.title)}">${icon('check')}</button><div class="task-copy"><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.meta || '今日任务')}</small></div><div class="row-actions">${!compact ? `<button class="mini-button" type="button" data-edit-task="${index}" aria-label="编辑任务" title="编辑">${icon('pencil')}</button>` : ''}<button class="mini-button" type="button" data-delete-task="${index}" aria-label="删除任务" title="删除">${icon('trash-2')}</button></div></div>`;
+      }
+      function renderTasks() {
+        content.innerHTML = `<section class="module-toolbar"><div><h2>把下一步写清楚。</h2><p>${moduleMeta[1].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-filter="open">未完成 ${state.tasks.filter(item => !item.done).length}</button><button class="primary-button" type="button" data-create="1">${icon('plus')}新增任务</button></div></section><section class="summary-strip"><article class="summary-item"><small>今日任务</small><b>${state.tasks.length}</b></article><article class="summary-item"><small>已完成</small><b class="green">${getTasksDone()}</b></article><article class="summary-item"><small>推进记录</small><b>${state.growth.archives}</b></article><article class="summary-item"><small>建议</small><b>3 件</b></article></section><article class="panel"><header class="panel-head"><h2>任务清单</h2><button class="text-button" type="button" data-sort>按优先级整理</button></header><div class="task-list">${state.tasks.map((item,index) => taskRow(item,index)).join('')}</div></article>`;
+        refreshIcons();
+      }
+      function renderFinance() {
+        const list = state.modules[2];
+        const income = list.filter(item => item.amount > 0).reduce((sum,item) => sum + Number(item.amount),0);
+        const expense = Math.abs(list.filter(item => item.amount < 0).reduce((sum,item) => sum + Number(item.amount),0));
+        content.innerHTML = `<section class="module-toolbar"><div><h2>把日常收支记清楚。</h2><p>${moduleMeta[2].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-toast="账单已按日期排序">${icon('arrow-down-up')}排序</button><button class="primary-button" type="button" data-create="2">${icon('plus')}记一笔</button></div></section><section class="summary-strip"><article class="summary-item"><small>本月收入</small><b class="green">¥ ${income.toLocaleString()}</b></article><article class="summary-item"><small>本月支出</small><b>¥ ${expense.toLocaleString()}</b></article><article class="summary-item"><small>当前结余</small><b>¥ ${(income-expense).toLocaleString()}</b></article><article class="summary-item"><small>记录笔数</small><b>${list.length}</b></article></section><section class="finance-grid"><article class="panel"><header class="panel-head"><h2>最近账目</h2><button class="text-button" type="button" data-create="2">新增记录</button></header><div class="record-list">${list.map((item,index) => recordRow(item,index,2,'wallet-cards')).join('')}</div></article><aside class="chart-panel"><h3>本周支出趋势</h3><div class="bar-chart"><div class="bar" style="height:48%"><i style="height:62%"></i><span>一</span></div><div class="bar" style="height:68%"><i style="height:78%"></i><span>二</span></div><div class="bar" style="height:42%"><i style="height:55%"></i><span>三</span></div><div class="bar" style="height:82%"><i style="height:91%"></i><span>四</span></div><div class="bar" style="height:59%"><i style="height:70%"></i><span>五</span></div></div></aside></section>`;
+        refreshIcons();
+      }
+      function recordRow(item, index, module, type = 'file-text') {
+        const amount = module === 2 ? `<b class="amount ${Number(item.amount) >= 0 ? 'positive' : 'negative'}">${Number(item.amount) >= 0 ? '+' : ''}¥${Number(item.amount || 0).toLocaleString()}</b>` : '';
+        const news = module === 3 ? `<p>${escapeHtml(item.summary || '')}</p>${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">阅读原文 ↗</a>` : ''}` : '';
+        return `<article class="record" data-type="${module === 3 ? 'news' : ''}"><span class="record-icon">${icon(type)}</span><div class="record-copy"><b>${escapeHtml(item.title)}</b>${news}<small>${escapeHtml(item.meta || '')}</small></div><div class="row-actions">${amount}<button class="mini-button" type="button" data-edit-record="${module}:${index}" aria-label="编辑" title="编辑">${icon('pencil')}</button><button class="mini-button" type="button" data-delete-record="${module}:${index}" aria-label="删除" title="删除">${icon('trash-2')}</button></div></article>`;
+      }
+      function renderNews() {
+        const updated = state.live.newsUpdatedAt ? new Date(state.live.newsUpdatedAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) : '尚未更新';
+        content.innerHTML = `<section class="module-toolbar"><div><h2>只看与你有关的 AI 动态。</h2><p>${moduleMeta[3].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-refresh-news>${icon('refresh-cw')}刷新实时新闻</button><button class="primary-button" type="button" data-create="3">${icon('bookmark-plus')}收藏新闻</button></div></section><section class="summary-strip"><article class="summary-item"><small>今日动态</small><b>${state.modules[3].length}</b></article><article class="summary-item"><small>最近更新</small><b>${updated}</b></article><article class="summary-item"><small>已收藏</small><b>${state.modules[3].filter(item => !item.live).length}</b></article><article class="summary-item"><small>刷新策略</small><b>手动</b></article></section><div class="record-list" id="newsList">${state.modules[3].map((item,index) => recordRow(item,index,3,'newspaper')).join('')}</div>`;
+        refreshIcons();
+      }
+      function renderHabits() {
+        const done = state.habits.filter(item => item.done).length;
+        content.innerHTML = `<section class="module-toolbar"><div><h2>给生活留下一些稳定的重复。</h2><p>${moduleMeta[4].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-toast="连续记录已保存">${icon('calendar-check-2')}查看连续天数</button><button class="primary-button" type="button" data-create="4">${icon('plus')}新增习惯</button></div></section><section class="summary-strip"><article class="summary-item"><small>今日完成</small><b class="green">${done}/${state.habits.length}</b></article><article class="summary-item"><small>连续天数</small><b>${done * 3 + 3}</b></article><article class="summary-item"><small>今日浇水</small><b>${state.growth.water}</b></article><article class="summary-item"><small>完成率</small><b>${Math.round(done / Math.max(1,state.habits.length)*100)}%</b></article></section><section class="habit-grid">${state.habits.map((item,index) => `<article class="habit ${item.done ? 'done' : ''}"><button class="habit-toggle" type="button" data-toggle-habit="${index}"><span>${icon(item.icon)}</span><b>${escapeHtml(item.title)}</b><small>${item.done ? '已归档 · 今天完成' : escapeHtml(item.meta)}</small></button><div class="row-actions"><button class="mini-button" type="button" data-edit-habit="${index}" aria-label="编辑习惯">${icon('pencil')}</button><button class="mini-button" type="button" data-delete-habit="${index}" aria-label="删除习惯">${icon('trash-2')}</button></div></article>`).join('')}</section>`;
+        refreshIcons();
+      }
+      function renderIdeas() {
+        const creator = state.creator;
+        const clips = creator.clips || [];
+        const drafts = creator.drafts || [];
+        const ideas = state.modules[5] || [];
+        const activeTab = ['radar', 'workshop', 'queue'].includes(creator.activeTab) ? creator.activeTab : 'radar';
+        const reusable = clips.filter(item => item.status === '可复用').length;
+        const inProduction = drafts.filter(item => item.status !== '已发布').length;
+        const tab = (value, label, iconName) => `<button type="button" class="${activeTab === value ? 'active' : ''}" data-creator-tab="${value}">${icon(iconName)}${label}</button>`;
+        const clipRow = (item, index) => {
+          const statusClass = item.status === '待拆解' ? 'waiting' : '';
+          return `<article class="clip-record"><span class="clip-record-icon">${icon('clapperboard')}</span><div class="clip-copy"><b>${escapeHtml(item.title || '未命名内容样本')}</b><div class="clip-meta"><span>${escapeHtml(item.platform || '其他')}</span><button class="status-chip ${statusClass}" type="button" data-cycle-clip="${index}" title="点击切换状态">${escapeHtml(item.status || '待拆解')}</button><span>${escapeHtml(item.createdAt || '刚刚')}</span></div>${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">打开已归档链接 ↗</a>` : ''}</div><div class="row-actions"><button class="mini-button" type="button" data-edit-clip="${index}" aria-label="编辑样本" title="编辑">${icon('pencil')}</button><button class="mini-button" type="button" data-delete-clip="${index}" aria-label="删除样本" title="删除">${icon('trash-2')}</button></div></article>`;
+        };
+        const draftRow = (item, index) => `<article class="draft-sheet"><header class="draft-head"><div><h3>${escapeHtml(item.title || '未命名创作草稿')}</h3><small>${escapeHtml(item.platform || '内容平台')} · ${escapeHtml(item.style || '内容草稿')} · ${escapeHtml(item.updatedAt || '刚刚更新')}</small></div><div class="row-actions"><span class="status-chip ${item.status === '已发布' ? '' : 'waiting'}">${escapeHtml(item.status || '待制作')}</span><button class="mini-button" type="button" data-edit-draft="${index}" aria-label="编辑草稿" title="编辑">${icon('pencil')}</button><button class="mini-button" type="button" data-delete-draft="${index}" aria-label="删除草稿" title="删除">${icon('trash-2')}</button></div></header><div class="draft-grid"><section class="draft-block"><small>3 秒钩子</small><p>${escapeHtml(item.hook || '')}</p></section><section class="draft-block"><small>适合谁看</small><p>${escapeHtml(item.audience || '待补充目标读者')}</p></section><section class="draft-block wide"><small>内容结构</small><p>${escapeHtml(item.outline || '')}</p></section><section class="draft-block wide"><small>口播 / 图文脚本</small><p>${escapeHtml(item.script || '')}</p></section><section class="draft-block wide"><small>发布文案</small><p>${escapeHtml(item.caption || '')}</p></section><section class="draft-block"><small>标签</small><p>${escapeHtml(item.tags || '')}</p></section><section class="draft-block"><small>原始灵感</small><p>${escapeHtml(item.idea || '')}</p></section></div><div class="draft-actions"><button class="outline-button" type="button" data-copy-draft="${index}">${icon('copy')}复制文案</button><button class="outline-button" type="button" data-cycle-draft="${index}">${icon('arrow-right')}推进到下一步</button></div></article>`;
+        let body = '';
+        if (activeTab === 'radar') {
+          body = `<section class="creator-grid"><article class="panel"><header class="panel-head"><h2>爆款内容雷达</h2><button class="text-button" type="button" data-create-clip>归档新样本</button></header><div class="clip-list">${clips.map(clipRow).join('') || '<div class="empty">还没有内容样本。先保存一条公开链接或一个你看到的好选题。</div>'}</div></article><aside class="creator-note"><h3>正确的采集方式</h3><p>不要只收藏。每条样本只记三件事：它抓住了谁、前三秒说了什么、你准备如何改成自己的。</p><ul><li>${icon('link')}公开链接只做个人归档，不伪造平台数据。</li><li>${icon('scan-search')}先拆钩子和结构，再决定是否复用。</li><li>${icon('arrow-right')}可复用的样本直接推进到选题草稿。</li></ul></aside></section>`;
+        } else if (activeTab === 'workshop') {
+          body = `<section class="creator-grid"><div><article class="workshop-sheet"><h3>把一个念头推进成可以开拍、可以发布的第一版。</h3><p>输入自己的灵感、视频观点或参考内容，生成选题、标题、钩子、脚本和发布文案；你始终可以再改成自己的语气。</p><button class="primary-button" type="button" data-create-draft>${icon('sparkles')}生成创作草稿</button></article><article class="panel" style="margin-top:15px"><header class="panel-head"><h2>灵感收件箱</h2><button class="text-button" type="button" data-create="5">记录灵感</button></header><div class="record-list">${ideas.map((item,index) => recordRow(item,index,5,'lightbulb')).join('') || '<div class="empty">先记下一条灵感，之后再让它长成选题。</div>'}</div></article></div><aside class="creator-note"><h3>创作不是一次性完成</h3><p>先拿到结构完整的第一版，再根据你的经历、账号语气和镜头素材慢慢改。</p><ul><li>${icon('notebook-pen')}标题负责让人停下来。</li><li>${icon('mic')}脚本负责让人听下去。</li><li>${icon('send')}发布文案负责让人愿意互动。</li></ul></aside></section><section class="draft-list" style="margin-top:15px">${drafts.map(draftRow).join('') || '<div class="empty">还没有草稿。先从一条灵感开始生成。</div>'}</section>`;
+        } else {
+          body = `<section class="creator-grid"><article class="panel"><header class="panel-head"><h2>发布队列</h2><button class="text-button" type="button" data-create-draft>新建草稿</button></header><div class="queue-list">${drafts.map((item,index) => `<article class="queue-row"><span class="queue-no">${String(index + 1).padStart(2,'0')}</span><div class="queue-copy"><b>${escapeHtml(item.title || '未命名草稿')}</b><small>${escapeHtml(item.platform || '内容平台')} · ${escapeHtml(item.status || '待制作')} · ${escapeHtml(item.updatedAt || '刚刚更新')}</small></div><div class="row-actions"><button class="mini-button" type="button" data-edit-draft="${index}" aria-label="编辑草稿">${icon('pencil')}</button><button class="mini-button" type="button" data-cycle-draft="${index}" aria-label="推进状态">${icon('arrow-right')}</button></div></article>`).join('') || '<div class="empty">完成一版草稿后，它会出现在这里，帮你把创作和发布分开处理。</div>'}</div></article><aside class="creator-note"><h3>一天只推进一个动作</h3><p>发布队列不追求塞满，而是帮助你清楚知道：这条内容现在是待写、待拍、待发，还是已经完成。</p><ul><li>${icon('circle-dot')}待制作：补素材、改脚本。</li><li>${icon('video')}待拍摄：准备镜头和录制。</li><li>${icon('send')}待发布：补封面、标题和评论区动作。</li></ul></aside></section>`;
+        }
+        content.innerHTML = `<section class="module-toolbar"><div><h2>让内容创作有一条可推进的生产线。</h2><p>${moduleMeta[5].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-create-clip>${icon('link')}采集样本</button><button class="primary-button" type="button" data-create-draft>${icon('sparkles')}生成草稿</button></div></section><section class="summary-strip"><article class="summary-item"><small>内容样本</small><b>${clips.length}</b></article><article class="summary-item"><small>可复用结构</small><b class="green">${reusable}</b></article><article class="summary-item"><small>创作草稿</small><b>${drafts.length}</b></article><article class="summary-item"><small>待推进</small><b>${inProduction}</b></article></section><section class="creator-brief"><div><h2>收集、拆解、生成、发布。让灵感不止停在收藏夹。</h2><p>这里先使用本地创作框架生成结构化草稿。后续接入模型和平台授权数据后，可以替换为真实的内容分析与生成服务。</p></div><div class="creator-brief-side"><small>今日创作节奏</small><b>${drafts[0] ? escapeHtml(drafts[0].title) : '先归档一条样本'}</b><span>${clips.length ? `已收集 ${clips.length} 条参考内容` : '从一条链接开始'}</span></div></section><nav class="creator-tabs" aria-label="内容创作视图">${tab('radar','爆款内容雷达','radar')}${tab('workshop','灵感与文案工坊','pen-line')}${tab('queue','发布队列','list-todo')}</nav>${body}`;
+        refreshIcons();
+      }
+      function renderLearning() {
+        const list = state.modules[6];
+        const done = list.filter(item => item.done).length;
+        content.innerHTML = `<section class="module-toolbar"><div><h2>让学习留下可见的进展。</h2><p>${moduleMeta[6].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-toast="已按学习进度排序">${icon('list-filter')}排序</button><button class="primary-button" type="button" data-create="6">${icon('plus')}新计划</button></div></section><section class="summary-strip"><article class="summary-item"><small>学习项目</small><b>${list.length}</b></article><article class="summary-item"><small>今日完成</small><b class="green">${done}</b></article><article class="summary-item"><small>本周投入</small><b>135 分</b></article><article class="summary-item"><small>下一次复习</small><b>明天</b></article></section><section class="learning-grid"><article class="panel"><header class="panel-head"><h2>学习计划</h2><button class="text-button" type="button" data-create="6">新增</button></header><div class="task-list">${list.map((item,index) => `<div class="task-row ${item.done ? 'done' : ''}"><button class="check" type="button" data-toggle-record="6:${index}" aria-label="完成学习计划">${icon('check')}</button><div class="task-copy"><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.meta)}</small></div><div class="row-actions"><button class="mini-button" type="button" data-edit-record="6:${index}" aria-label="编辑">${icon('pencil')}</button><button class="mini-button" type="button" data-delete-record="6:${index}" aria-label="删除">${icon('trash-2')}</button></div></div>`).join('')}</div></article><aside class="insight-card"><h3>学习建议</h3><p>每完成一次学习，补一行自己的理解。输出比收藏更能留下长期记忆。</p><button type="button" data-agent-prompt="给我一个今天的学习建议">问问 Agent →</button></aside></section>`;
+        refreshIcons();
+      }
+      function renderEnglish() {
+        const list = state.modules[7];
+        content.innerHTML = `<section class="module-toolbar"><div><h2>每天留出十分钟给英语。</h2><p>${moduleMeta[7].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-refresh-english>${icon('shuffle')}换一组</button><button class="primary-button" type="button" data-create="7">${icon('plus')}新练习</button></div></section><section class="english-phrase"><div><b>Take it one step at a time.</b><p>一步一步来。今天的任务是听一遍、跟读一遍、再用自己的话说一遍。</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-speak="Take it one step at a time.">${icon('volume-2')}跟读</button><button class="primary-button" type="button" data-complete-phrase>完成练习</button></div></section><section class="word-grid">${list.map((item,index) => `<article class="word-card"><small>DAILY ENGLISH</small><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.meta)}<br>${escapeHtml(item.detail || '')}</p><div class="toolbar-actions"><button class="outline-button" type="button" data-speak="${escapeHtml(item.title)}">${icon('volume-2')}朗读</button><button class="${item.done ? 'outline-button' : 'primary-button'}" type="button" data-toggle-record="7:${index}">${item.done ? '已掌握' : '完成练习'}</button><button class="mini-button" type="button" data-edit-record="7:${index}" aria-label="编辑练习">${icon('pencil')}</button><button class="mini-button" type="button" data-delete-record="7:${index}" aria-label="删除练习">${icon('trash-2')}</button></div></article>`).join('')}</section>`;
+        refreshIcons();
+      }
+      function renderWeight() {
+        const list = state.modules[8];
+        const values = list.map(item => Number(String(item.title).replace(/[^0-9.]/g,''))).filter(Boolean);
+        content.innerHTML = `<section class="module-toolbar"><div><h2>看趋势，而不是单日波动。</h2><p>${moduleMeta[8].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-toast="7 日移动平均已计算">${icon('chart-no-axes-combined')}查看均值</button><button class="primary-button" type="button" data-create="8">${icon('plus')}记体重</button></div></section><section class="summary-strip"><article class="summary-item"><small>最新体重</small><b>${values[0] || '--'} kg</b></article><article class="summary-item"><small>较上次</small><b class="green">-0.3 kg</b></article><article class="summary-item"><small>7 日均值</small><b>62.6 kg</b></article><article class="summary-item"><small>记录天数</small><b>${list.length}</b></article></section><section class="finance-grid"><article class="panel"><header class="panel-head"><h2>体重记录</h2><button class="text-button" type="button" data-create="8">新增</button></header><div class="record-list">${list.map((item,index) => recordRow(item,index,8,'scale')).join('')}</div></article><aside class="chart-panel"><h3>最近趋势</h3><div class="bar-chart">${[54,66,62,72,58,48].map((height,index) => `<div class="bar" style="height:${height}%"><i style="height:100%;background:var(--green)"></i><span>${index+1}</span></div>`).join('')}</div></aside></section>`;
+        refreshIcons();
+      }
+      function renderReview() {
+        const list = state.modules[9];
+        const review = state.aiReview || {};
+        const generated = Number(review.generatedAt || 0);
+        const time = generated ? new Date(generated).toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' }) : '';
+        const smartReview = generated ? `<section class="ai-review-sheet"><header class="ai-review-head"><div><h2>智能总结与明日安排</h2><p>基于当前本地的任务、打卡、创作和手写复盘生成 · ${time} 更新</p></div><button class="outline-button" type="button" data-generate-review>${icon('refresh-cw')}重新生成</button></header><div class="ai-review-grid"><article class="ai-review-block"><h3>今天的总结</h3><p>${escapeHtml(review.summary || '')}</p></article><article class="ai-review-block"><h3>明天这样安排</h3><ol>${(review.tomorrow || []).map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ol></article><article class="ai-review-block"><h3>优化建议</h3><ul>${(review.suggestions || []).map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul></article></div></section>` : `<section class="ai-review-sheet"><div class="review-empty"><div><b>让工作台先帮你收束今天。</b><p>生成后会读取你已完成和未完成的任务、习惯以及创作进度，给出一份可执行的明日安排。</p><button class="primary-button" type="button" data-generate-review>${icon('sparkles')}生成智能总结</button></div></div></section>`;
+        content.innerHTML = `<section class="module-toolbar"><div><h2>用三分钟收好今天，再给明天留一条清晰路线。</h2><p>${moduleMeta[9].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-agent-prompt="帮我做每日复盘">${icon('bot')}让 Agent 协助</button><button class="outline-button" type="button" data-generate-review>${icon('sparkles')}生成智能总结</button><button class="primary-button" type="button" data-save-review>${icon('save')}保存复盘</button></div></section><section class="review-grid">${list.map((item,index) => `<article class="review-card"><b>${escapeHtml(item.title)}</b><textarea data-review="${index}" aria-label="${escapeHtml(item.title)}">${escapeHtml(item.meta)}</textarea><small>自动暂存，点击“保存复盘”后正式归档。</small></article>`).join('')}</section>${smartReview}`;
+        refreshIcons();
+      }
+      function renderGeneric(module, iconName, heading) {
+        const list = state.modules[module] || [];
+        content.innerHTML = `<section class="module-toolbar"><div><h2>${heading}</h2><p>${moduleMeta[module].helper}</p></div><div class="toolbar-actions"><button class="outline-button" type="button" data-toast="搜索与标签会在正式版本开放">${icon('search')}搜索</button><button class="primary-button" type="button" data-create="${module}">${icon('plus')}${moduleMeta[module].action}</button></div></section><section class="summary-strip"><article class="summary-item"><small>当前记录</small><b>${list.length}</b></article><article class="summary-item"><small>今日新增</small><b>1</b></article><article class="summary-item"><small>已归档</small><b class="green">${state.growth.archives}</b></article><article class="summary-item"><small>处理建议</small><b>下一步</b></article></section><div class="record-list">${list.map((item,index) => recordRow(item,index,module,iconName)).join('') || '<div class="empty">还没有内容，先写下第一条记录。</div>'}</div>`;
+        refreshIcons();
+      }
+      function render() {
+        renderShell();
+        if (active === 0) renderDashboard();
+        else if (active === 1) renderTasks();
+        else if (active === 2) renderFinance();
+        else if (active === 3) renderNews();
+        else if (active === 4) renderHabits();
+        else if (active === 5) renderIdeas();
+        else if (active === 6) renderLearning();
+        else if (active === 7) renderEnglish();
+        else if (active === 8) renderWeight();
+        else if (active === 9) renderReview();
+        closeMobileNav();
+        animateContent();
+      }
+      function navigate(index) {
+        active = Number(index);
+        render();
+        showToast(`已进入“${navItems[active][1]}”`);
+      }
+      function openEntry(module = active, item = null, index = -1) {
+        editing = { module, index };
+        document.getElementById('dialogTitle').textContent = item ? '编辑记录' : (moduleMeta[module]?.action || '新增任务');
+        document.getElementById('dialogCopy').textContent = moduleMeta[module]?.helper || '记录一项明确、可执行的下一步。';
+        document.getElementById('entryId').value = item?.id || '';
+        document.getElementById('entryTitle').value = item?.title || '';
+        document.getElementById('entryMeta').value = item?.meta || '';
+        document.getElementById('entryAmount').value = item?.amount ?? '';
+        document.getElementById('amountField').style.display = module === 2 ? 'block' : 'none';
+        entryBackdrop.classList.add('open');
+        setTimeout(() => document.getElementById('entryTitle').focus(), 120);
+      }
+      function closeEntry() { entryBackdrop.classList.remove('open'); editing = null; }
+      function saveEntry(event) {
+        event.preventDefault();
+        const titleValue = document.getElementById('entryTitle').value.trim();
+        if (!titleValue || !editing) return;
+        const metaValue = document.getElementById('entryMeta').value.trim();
+        const amountValue = Number(document.getElementById('entryAmount').value || 0);
+        const module = editing.module;
+        const record = { id: document.getElementById('entryId').value || id(), title: titleValue, meta: metaValue };
+        if (module === 2) record.amount = amountValue;
+        if ([6,7].includes(module)) record.done = false;
+        if (module === 1) {
+          if (editing.index >= 0) state.tasks[editing.index] = { ...state.tasks[editing.index], ...record };
+          else state.tasks.unshift({ ...record, done: false });
+        } else if (module === 4) {
+          if (editing.index >= 0) state.habits[editing.index] = { ...state.habits[editing.index], ...record };
+          else state.habits.push({ ...record, done: false, icon: 'circle-check' });
+        } else {
+          const list = state.modules[module] || (state.modules[module] = []);
+          if (editing.index >= 0) list[editing.index] = { ...list[editing.index], ...record };
+          else list.unshift(record);
+        }
+        const wasEditing = editing.index >= 0;
+        save(); closeEntry(); render(); showToast(wasEditing ? '修改已保存' : '新记录已归档');
+      }
+      function nowLabel() {
+        return new Date().toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
+      }
+      function openClip(item = null, index = -1) {
+        clipEditingIndex = index;
+        document.getElementById('clipDialogTitle').textContent = item ? '编辑内容样本' : '归档内容样本';
+        document.getElementById('clipId').value = item?.id || '';
+        document.getElementById('clipPlatform').value = item?.platform || '抖音';
+        document.getElementById('clipStatus').value = item?.status || '待拆解';
+        document.getElementById('clipTitle').value = item?.title || '';
+        document.getElementById('clipUrl').value = item?.url || '';
+        document.getElementById('clipNote').value = item?.note || '';
+        clipBackdrop.classList.add('open');
+        setTimeout(() => document.getElementById('clipTitle').focus(), 120);
+      }
+      function closeClip() { clipBackdrop.classList.remove('open'); clipEditingIndex = -1; }
+      function saveClip(event) {
+        event.preventDefault();
+        const titleValue = document.getElementById('clipTitle').value.trim();
+        if (!titleValue) return;
+        const record = {
+          id: document.getElementById('clipId').value || id(),
+          platform: document.getElementById('clipPlatform').value,
+          status: document.getElementById('clipStatus').value,
+          title: titleValue,
+          url: document.getElementById('clipUrl').value.trim(),
+          note: document.getElementById('clipNote').value.trim(),
+          createdAt: nowLabel()
+        };
+        const updating = clipEditingIndex >= 0;
+        if (updating) state.creator.clips[clipEditingIndex] = { ...state.creator.clips[clipEditingIndex], ...record };
+        else state.creator.clips.unshift(record);
+        state.creator.activeTab = 'radar';
+        save(); closeClip(); render(); playTapSound('success'); showToast(updating ? '内容样本已更新' : '内容样本已归档');
+      }
+      function nextClipStatus(index) {
+        const item = state.creator.clips[index];
+        if (!item) return;
+        const stages = ['待拆解', '已拆解', '可复用'];
+        item.status = stages[(stages.indexOf(item.status) + 1) % stages.length];
+        save(); render(); playTapSound('success'); showToast(`样本已更新为“${item.status}”`);
+      }
+      function deleteClip(index) {
+        const item = state.creator.clips[index];
+        if (!item) return;
+        state.creator.clips.splice(index, 1);
+        save(); render(); showToast('内容样本已删除');
+      }
+      function topicSeed(value) {
+        const compact = String(value || '').replace(/\s+/g, ' ').trim();
+        const first = compact.split(/[。！？；!?]/)[0].replace(/[，、,.]/g, ' ').trim();
+        return (first || compact).slice(0, 34);
+      }
+      function createDraftContent({ idea, platform, style, audience }) {
+        const seed = topicSeed(idea) || '把零散灵感变成可发布的内容';
+        const reader = audience || '想提高效率的职场人和内容创作者';
+        const isList = style === '清单干货';
+        const isContrast = style === '反差观点';
+        const title = isList ? `把“${seed}”做好，我只保留这 3 个动作` : isContrast ? `别再用“多收藏”解决“没灵感”：${seed}` : `我把“${seed}”变成一条可发布内容的过程`;
+        const hook = isContrast ? `大多数人以为问题在灵感不够，其实卡住你的往往是：${seed}。` : `如果你也是${reader}，这个关于“${seed}”的做法，也许能让你今天就开始行动。`;
+        const outline = `1. 真实场景：为什么“${seed}”会让人停住。\n2. 一个反差：不是做得更多，而是先找到下一步。\n3. 可执行做法：收集素材、写下判断、生成第一版、安排发布。\n4. 收尾提问：你现在最想推进的哪一件事？`;
+        const script = `我最近发现，${seed}。\n\n以前我会把很多内容收藏起来，觉得以后总会用到，但真正需要发内容时，还是从零开始想。后来我给自己定了一个很简单的动作：每看到一个值得参考的内容，就记录它抓住了谁、前三秒说了什么、我准备怎么改成自己的。\n\n这样灵感就不再只是收藏，而会变成一个能继续推进的选题。今天这条内容，也想提醒你：先把下一步写出来，比继续等灵感更有用。`;
+        const caption = `最近在整理自己的内容工作流，最大的变化不是灵感变多了，而是每条灵感都有了去处。\n\n“${seed}”这件事，我会先放进内容雷达，写下值得拆的原因，再生成一版选题和文案。第一版不需要完美，但能让我马上知道下一步该做什么。\n\n你做内容时，最容易卡在哪一步？`;
+        const tags = platform === '小红书' ? '#自媒体运营 #内容创作 #效率提升 #职场成长 #工作流' : '#自媒体 #内容创作 #上班族效率 #AI工作台 #工作流';
+        return { idea, platform, style, audience: reader, title, hook, outline, script, caption, tags, status: '待制作', updatedAt: nowLabel() };
+      }
+      function openDraft(item = null, index = -1) {
+        draftEditingIndex = index;
+        document.getElementById('draftDialogTitle').textContent = item ? '编辑创作草稿' : '从灵感生成创作草稿';
+        document.getElementById('draftDialogCopy').textContent = item ? '修改灵感和表达方向后，会重新整理成一版完整的内容草稿。' : '填写一个想法，系统会按内容生产结构生成选题、钩子、脚本和发布文案。生成结果可继续编辑。';
+        document.getElementById('draftSubmit').textContent = item ? '更新创作草稿' : '生成创作草稿';
+        document.getElementById('draftId').value = item?.id || '';
+        document.getElementById('draftIdea').value = item?.idea || '';
+        document.getElementById('draftPlatform').value = item?.platform || '抖音';
+        document.getElementById('draftStyle').value = item?.style || '真实经验分享';
+        document.getElementById('draftAudience').value = item?.audience || '';
+        draftBackdrop.classList.add('open');
+        setTimeout(() => document.getElementById('draftIdea').focus(), 120);
+      }
+      function closeDraft() { draftBackdrop.classList.remove('open'); draftEditingIndex = -1; }
+      function saveDraft(event) {
+        event.preventDefault();
+        const idea = document.getElementById('draftIdea').value.trim();
+        if (!idea) return;
+        const record = { id: document.getElementById('draftId').value || id(), ...createDraftContent({ idea, platform: document.getElementById('draftPlatform').value, style: document.getElementById('draftStyle').value, audience: document.getElementById('draftAudience').value.trim() }) };
+        const updating = draftEditingIndex >= 0;
+        if (updating) state.creator.drafts[draftEditingIndex] = { ...state.creator.drafts[draftEditingIndex], ...record, status: state.creator.drafts[draftEditingIndex].status || '待制作' };
+        else state.creator.drafts.unshift(record);
+        state.creator.activeTab = 'workshop';
+        save(); closeDraft(); render(); playTapSound('success'); showToast(updating ? '创作草稿已更新' : '已生成一版创作草稿');
+      }
+      function nextDraftStatus(index) {
+        const item = state.creator.drafts[index];
+        if (!item) return;
+        const stages = ['待制作', '待拍摄', '待发布', '已发布'];
+        item.status = stages[(stages.indexOf(item.status) + 1) % stages.length];
+        item.updatedAt = nowLabel();
+        save(); render(); playTapSound('success'); showToast(`内容已推进到“${item.status}”`);
+      }
+      function deleteDraft(index) {
+        const item = state.creator.drafts[index];
+        if (!item) return;
+        state.creator.drafts.splice(index, 1);
+        save(); render(); showToast('创作草稿已删除');
+      }
+      async function copyDraft(index) {
+        const item = state.creator.drafts[index];
+        if (!item) return;
+        const text = `${item.title}\n\n${item.hook}\n\n${item.script}\n\n${item.caption}\n\n${item.tags}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('文案已复制，可直接修改后发布');
+        } catch (_) {
+          const helper = document.createElement('textarea');
+          helper.value = text; document.body.appendChild(helper); helper.select(); document.execCommand('copy'); helper.remove();
+          showToast('文案已复制，可直接修改后发布');
+        }
+      }
+      function generateDailyReview() {
+        const completed = state.tasks.filter(item => item.done);
+        const openTasks = state.tasks.filter(item => !item.done);
+        const finishedHabits = state.habits.filter(item => item.done);
+        const drafts = state.creator.drafts || [];
+        const clips = state.creator.clips || [];
+        const percent = Math.round(completed.length / Math.max(1, state.tasks.length) * 100);
+        const completedNames = completed.slice(0, 2).map(item => item.title).join('、');
+        const summary = `今天完成了 ${completed.length}/${state.tasks.length} 项任务（${percent}%），${finishedHabits.length}/${state.habits.length} 个习惯已打卡。${completedNames ? `已经推进：${completedNames}。` : '今天还没有勾选任务，可以从一件十分钟内能开始的事情补起。'}${drafts.length ? `内容侧有 ${drafts.length} 份草稿，其中“${drafts[0].title}”可以作为下一步推进对象。` : '内容侧暂时没有草稿，明天可以先把一个念头写进工坊。'}`;
+        const tomorrow = [
+          openTasks[0] ? `优先处理：${openTasks[0].title}（先投入 25 分钟，不追求一次完成）。` : '先安排一件最重要的工作，并把它拆成 25 分钟内能开始的动作。',
+          drafts.find(item => item.status !== '已发布') ? `内容推进：${drafts.find(item => item.status !== '已发布').title}（把状态推进一格）。` : '内容推进：归档 1 条参考内容，再生成 1 版选题草稿。',
+          '收尾安排：在下班前留 10 分钟更新账本和待办，避免把未完成事项带成模糊压力。'
+        ];
+        const suggestions = [
+          percent < 60 ? '明天只保留 1 件真正重要的工作任务，其他事项放入次级清单。' : '今天的完成节奏不错，明天继续把高认知任务放在精力最好的时段。',
+          clips.length < 3 ? '内容雷达先积累 3 条可复用样本，创作时会更容易找到切入点。' : '样本已经有基础，明天从一条“可复用”样本里拆出自己的观点。',
+          finishedHabits.length < Math.ceil(state.habits.length / 2) ? '把习惯拆得更小，例如只做 5 分钟阅读或一杯水，降低打卡阻力。' : '已完成的习惯保持原样，不要因为状态好而一次增加太多目标。'
+        ];
+        state.aiReview = { generatedAt: Date.now(), summary, tomorrow, suggestions };
+        save(); render(); playTapSound('success'); showToast('智能总结和明日安排已生成');
+      }
+      function deleteItem(module, index) {
+        const list = module === 1 ? state.tasks : module === 4 ? state.habits : state.modules[module];
+        if (!list?.[index]) return;
+        deletedRecord = { module, index, item: list[index] };
+        list.splice(index,1); save(); render(); showToast('记录已移入回收篮', true);
+      }
+      function undoDelete() { if (!deletedRecord) return; const list = deletedRecord.module === 1 ? state.tasks : deletedRecord.module === 4 ? state.habits : state.modules[deletedRecord.module]; list.splice(deletedRecord.index,0,deletedRecord.item); deletedRecord = null; save(); render(); showToast('已恢复记录'); }
+      function toggleTask(index, source) {
+        const task = state.tasks[index]; if (!task) return;
+        task.done = !task.done;
+        if (task.done && !task.archived) { task.archived = true; state.growth.water += 1; state.growth.archives += 1; stamp(source, '已归档\n+1 推进'); showToast('任务已归档 · 桌面植物已浇水'); }
+        else if (task.done) showToast('任务已恢复完成，今日推进记录保持不变');
+        else showToast('任务恢复为待完成状态，已归档的推进记录保留');
+        save(); render();
+        if (task.done) { const paper = document.getElementById('todayStamp'); paper?.classList.add('pulse'); setTimeout(() => paper?.classList.remove('pulse'), 260); }
+      }
+      function toggleHabit(index, source) { const habit = state.habits[index]; if (!habit) return; habit.done = !habit.done; if (habit.done && !habit.archived) { habit.archived = true; state.growth.archives += 1; stamp(source, '习惯\n已打卡'); showToast('习惯已打卡，今日记录已更新'); } else if (habit.done) showToast('习惯已恢复完成，今日归档保持不变'); else showToast('已取消今天的打卡，归档记录保留'); save(); render(); }
+      function toggleModuleRecord(module,index,source) { const item = state.modules[module]?.[index]; if (!item) return; item.done = !item.done; if (item.done && !item.archived) { item.archived = true; state.growth.archives += 1; stamp(source, module === 7 ? '练习\n已完成' : '学习\n已归档'); showToast(module === 7 ? '英语练习已完成' : '学习进度已更新'); } else if (item.done) showToast('已恢复完成，今日归档保持不变'); else showToast('已恢复为待完成状态，归档记录保留'); save(); render(); }
+      async function refreshNews(button) {
+        if (!liveSkill?.fetchAiNews) { showToast('实时新闻服务暂不可用，已保留本地内容'); return; }
+        button?.classList.add('loading');
+        const original = button?.innerHTML;
+        if (button) button.innerHTML = `${icon('loader-circle')}正在抓取`;
+        refreshIcons();
+        try {
+          const stories = await liveSkill.fetchAiNews();
+          state.modules[3] = stories.map(item => ({ id:item.id || id(), title:item.title, meta:item.meta, summary:item.summary, source:item.source, url:item.url, live:true }));
+          state.live.newsUpdatedAt = Date.now(); save(); render(); showToast('已更新最新 AI 新闻');
+        } catch (_) { if (button) { button.classList.remove('loading'); button.innerHTML = original; refreshIcons(); } showToast('暂时无法连接实时新闻，保留原有内容'); }
+      }
+      async function refreshEnglish(button) {
+        if (!liveSkill?.fetchEnglishWords) { showToast('英语内容暂不可用，已保留本地练习'); return; }
+        button?.classList.add('loading');
+        try {
+          const words = await liveSkill.fetchEnglishWords();
+          state.modules[7] = words.map(item => ({ id:item.id || id(), title:item.word || item.title, meta:item.translation || item.meta || '', detail:item.example || item.definition || '', done:false }));
+          state.live.wordsUpdatedAt = Date.now(); save(); render(); showToast('今日单词与例句已更新');
+        } catch (_) { showToast('实时单词暂不可用，保留原有练习'); button?.classList.remove('loading'); }
+      }
+      function speak(text) { if (!('speechSynthesis' in window)) { showToast('当前浏览器不支持语音朗读'); return; } speechSynthesis.cancel(); const speech = new SpeechSynthesisUtterance(text); speech.lang = /^[A-Za-z]/.test(text) ? 'en-US' : 'zh-CN'; speech.rate = .92; speechSynthesis.speak(speech); showToast('正在朗读'); }
+      function openAgent() { document.getElementById('agentPanel').classList.add('open'); document.getElementById('agentLauncher').classList.add('hidden'); setTimeout(() => document.getElementById('agentInput').focus(), 220); }
+      function closeAgent() { document.getElementById('agentPanel').classList.remove('open'); document.getElementById('agentLauncher').classList.remove('hidden'); }
+      function addAgentMessage(text, role = 'agent') { const node = document.createElement('div'); node.className = `bubble ${role === 'user' ? 'user' : ''}`; node.textContent = text; const messages = document.getElementById('agentMessages'); messages.appendChild(node); messages.scrollTop = messages.scrollHeight; }
+      function answerAgent(message) {
+        const text = message.trim(); if (!text) return;
+        addAgentMessage(text,'user');
+        const routes = [[/待办|任务/,1,'已经为你打开今日待办。先选一件十分钟内能开始的小事。'],[/记账|收支|花了/,2,'收支账本已经打开，金额和分类都可以直接新增。'],[/新闻|AI|人工智能/,3,'每日 AI 新闻已经打开，你可以点击刷新抓取最新内容。'],[/习惯|打卡/,4,'习惯页面已经打开，完成后会留下今天的归档记录。'],[/灵感|选题|文案|爆款|视频|创作|内容/,5,'内容创作已经打开。你可以先归档一个样本，或直接从灵感生成一版草稿。'],[/学习/,6,'学习计划已经打开，今天适合完成一个小单元。'],[/英语|单词/,7,'英语练习已经打开，可以朗读、跟读或换一组单词。'],[/体重/,8,'体重记录已经打开，请看长期趋势，不必纠结单日波动。'],[/复盘|总结/,9,'每日复盘已经打开，我会基于今天的记录整理一份明日安排。'],[/首页|总览|今天|工作台/,0,'已经回到今天的总览。']];
+        let reply = '';
+        if (/今天有什么任务|未完成/.test(text)) { const undone = state.tasks.filter(item => !item.done); reply = undone.length ? `今天还有 ${undone.length} 项：${undone.map(item => item.title).join('、')}。` : '今天的任务都已完成。'; }
+        else if (/刷新.*新闻/.test(text)) { navigate(3); setTimeout(() => refreshNews(), 180); reply = '正在尝试刷新最新 AI 新闻。'; }
+        else if (/换.*单词|换一组/.test(text)) { navigate(7); setTimeout(() => refreshEnglish(), 180); reply = '正在准备一组新的英语练习。'; }
+        else if (/生成.*(选题|文案|脚本)|帮我.*(选题|写文案)|爆款.*(视频|内容)/.test(text)) { navigate(5); setTimeout(() => openDraft(), 180); reply = '我已经打开创作工坊。把你的灵感或参考视频观点写进去，就能先生成一版标题、钩子、脚本和发布文案。'; }
+        else if (/帮我.*(复盘|总结)|生成.*(复盘|总结)/.test(text)) { navigate(9); setTimeout(generateDailyReview, 180); reply = '我会根据今天已经完成的任务、习惯和创作进度，整理一份总结和明日安排。'; }
+        else { const route = routes.find(([matcher]) => matcher.test(text)); if (route) { navigate(route[1]); reply = route[2]; } else if (/建议|怎么做/.test(text)) reply = '先把目标缩小成十分钟内能开始的一步。完成以后再回来归档，我会帮你看到今天的推进。'; else reply = '你可以试试说“今天有什么任务”“帮我做一个选题”或“帮我做每日复盘”。'; }
+        setTimeout(() => addAgentMessage(reply), 220);
+      }
+      function setVoiceState(mode, message) { const button = document.getElementById('voiceButton'); button.classList.toggle('listening', mode === 'listening'); document.getElementById('voiceHint').textContent = message; }
+      function configureVoice() {
+        const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!Recognition) { document.getElementById('voiceButton').addEventListener('click', () => showToast('当前浏览器不支持语音识别，请使用文字输入')); return; }
+        voiceRecognition = new Recognition(); voiceRecognition.lang = 'zh-CN'; voiceRecognition.interimResults = true; voiceRecognition.continuous = false;
+        let finalText = '';
+        voiceRecognition.onstart = () => { listening = true; finalText = ''; setVoiceState('listening','正在聆听，请说出你的指令'); };
+        voiceRecognition.onresult = event => { let interim = ''; for (let i=event.resultIndex;i<event.results.length;i+=1) { const transcript = event.results[i][0].transcript; if (event.results[i].isFinal) finalText += transcript; else interim += transcript; } document.getElementById('agentInput').value = finalText || interim; };
+        voiceRecognition.onend = () => { listening = false; setVoiceState('ready','工作台助手 · 可文字或语音输入'); if (finalText.trim()) { document.getElementById('agentInput').value = ''; answerAgent(finalText.trim()); } };
+        voiceRecognition.onerror = event => { listening = false; setVoiceState('error','语音识别暂不可用，请改用文字输入'); if (event.error === 'not-allowed') showToast('请在浏览器地址栏允许麦克风权限'); };
+        document.getElementById('voiceButton').addEventListener('click', async () => { openAgent(); if (listening) { voiceRecognition.stop(); return; } try { if (navigator.mediaDevices?.getUserMedia) { const stream = await navigator.mediaDevices.getUserMedia({ audio:true }); stream.getTracks().forEach(track => track.stop()); } voiceRecognition.start(); } catch (_) { showToast('无法访问麦克风，请检查浏览器权限'); } });
+      }
+      function openProfile() { document.getElementById('profileName').value = state.profile.name; document.getElementById('profileRole').value = state.profile.role; document.getElementById('profileMotto').value = state.profile.motto; profileBackdrop.classList.add('open'); }
+      function closeProfile() { profileBackdrop.classList.remove('open'); }
+      function closeMobileNav() { mobileDrawer.classList.remove('open'); mobileScrim.classList.remove('open'); }
+      function openMobileNav() { mobileDrawer.classList.add('open'); mobileScrim.classList.add('open'); }
+
+      document.getElementById('enterDesk').addEventListener('click', () => document.getElementById('welcome').classList.add('hide'));
+      document.getElementById('themeSelect').addEventListener('change', event => { state.theme = event.target.value; save(); render(); showToast('纸张视觉已切换，交互与数据保持不变'); });
+      document.getElementById('mobileMenu').addEventListener('click', openMobileNav); mobileScrim.addEventListener('click', closeMobileNav);
+      document.getElementById('soundToggle').addEventListener('click', () => { state.preferences.soundEnabled = state.preferences.soundEnabled === false; save(); render(); showToast(state.preferences.soundEnabled ? '点击声音已开启' : '点击声音已关闭'); });
+      document.getElementById('notifications').addEventListener('click', () => showToast('今天没有新的提醒')); document.getElementById('agentTop').addEventListener('click', openAgent); document.getElementById('agentLauncher').addEventListener('click', openAgent); document.getElementById('agentClose').addEventListener('click', closeAgent);
+      document.getElementById('createPrimary').addEventListener('click', () => active === 5 ? openDraft() : openEntry(active || 1));
+      document.getElementById('entryForm').addEventListener('submit', saveEntry); document.querySelector('[data-close-dialog]').addEventListener('click', closeEntry); entryBackdrop.addEventListener('click', event => { if (event.target === entryBackdrop) closeEntry(); });
+      document.querySelector('[data-close-profile]').addEventListener('click', closeProfile); profileBackdrop.addEventListener('click', event => { if (event.target === profileBackdrop) closeProfile(); });
+      document.getElementById('clipForm').addEventListener('submit', saveClip); document.querySelector('[data-close-clip]').addEventListener('click', closeClip); clipBackdrop.addEventListener('click', event => { if (event.target === clipBackdrop) closeClip(); });
+      document.getElementById('draftForm').addEventListener('submit', saveDraft); document.querySelector('[data-close-draft]').addEventListener('click', closeDraft); draftBackdrop.addEventListener('click', event => { if (event.target === draftBackdrop) closeDraft(); });
+      document.getElementById('profileForm').addEventListener('submit', event => { event.preventDefault(); state.profile.name = document.getElementById('profileName').value.trim() || defaults.profile.name; state.profile.role = document.getElementById('profileRole').value.trim() || defaults.profile.role; state.profile.motto = document.getElementById('profileMotto').value.trim() || defaults.profile.motto; save(); closeProfile(); render(); showToast('个人档案已保存'); });
+      document.getElementById('agentForm').addEventListener('submit', event => { event.preventDefault(); const input = document.getElementById('agentInput'); const value = input.value; input.value = ''; answerAgent(value); });
+      document.addEventListener('pointerdown', event => {
+        const control = event.target.closest('button, a, select, input, textarea');
+        if (!control || control.disabled) return;
+        playTapSound('tap');
+        if (control.matches('button, a')) {
+          control.classList.add('press-feedback');
+          setTimeout(() => control.classList.remove('press-feedback'), 120);
+        }
+      });
+      document.addEventListener('click', event => {
+        if (event.target.closest('[data-close-nav]')) { closeMobileNav(); return; }
+        const nav = event.target.closest('[data-nav]'); if (nav) { navigate(nav.dataset.nav); return; }
+        if (event.target.closest('[data-profile]')) { openProfile(); return; }
+        const creatorTab = event.target.closest('[data-creator-tab]'); if (creatorTab) { state.creator.activeTab = creatorTab.dataset.creatorTab; save(); render(); return; }
+        if (event.target.closest('[data-create-clip]')) { openClip(); return; }
+        const editClip = event.target.closest('[data-edit-clip]'); if (editClip) { const index = Number(editClip.dataset.editClip); openClip(state.creator.clips[index], index); return; }
+        const deleteClipButton = event.target.closest('[data-delete-clip]'); if (deleteClipButton) { deleteClip(Number(deleteClipButton.dataset.deleteClip)); return; }
+        const cycleClip = event.target.closest('[data-cycle-clip]'); if (cycleClip) { nextClipStatus(Number(cycleClip.dataset.cycleClip)); return; }
+        if (event.target.closest('[data-create-draft]')) { openDraft(); return; }
+        const editDraft = event.target.closest('[data-edit-draft]'); if (editDraft) { const index = Number(editDraft.dataset.editDraft); openDraft(state.creator.drafts[index], index); return; }
+        const deleteDraftButton = event.target.closest('[data-delete-draft]'); if (deleteDraftButton) { deleteDraft(Number(deleteDraftButton.dataset.deleteDraft)); return; }
+        const cycleDraft = event.target.closest('[data-cycle-draft]'); if (cycleDraft) { nextDraftStatus(Number(cycleDraft.dataset.cycleDraft)); return; }
+        const copyDraftButton = event.target.closest('[data-copy-draft]'); if (copyDraftButton) { copyDraft(Number(copyDraftButton.dataset.copyDraft)); return; }
+        const create = event.target.closest('[data-create]'); if (create) { openEntry(Number(create.dataset.create)); return; }
+        const toggleTaskButton = event.target.closest('[data-toggle-task]'); if (toggleTaskButton) { toggleTask(Number(toggleTaskButton.dataset.toggleTask), toggleTaskButton); return; }
+        const editTaskButton = event.target.closest('[data-edit-task]'); if (editTaskButton) { const index = Number(editTaskButton.dataset.editTask); openEntry(1, state.tasks[index], index); return; }
+        const deleteTaskButton = event.target.closest('[data-delete-task]'); if (deleteTaskButton) { deleteItem(1, Number(deleteTaskButton.dataset.deleteTask)); return; }
+        const habitButton = event.target.closest('[data-toggle-habit]'); if (habitButton) { toggleHabit(Number(habitButton.dataset.toggleHabit), habitButton); return; }
+        const editHabit = event.target.closest('[data-edit-habit]'); if (editHabit) { const index = Number(editHabit.dataset.editHabit); openEntry(4, state.habits[index], index); return; }
+        const deleteHabit = event.target.closest('[data-delete-habit]'); if (deleteHabit) { deleteItem(4, Number(deleteHabit.dataset.deleteHabit)); return; }
+        const toggleRecord = event.target.closest('[data-toggle-record]'); if (toggleRecord) { const [module,index] = toggleRecord.dataset.toggleRecord.split(':').map(Number); toggleModuleRecord(module,index,toggleRecord); return; }
+        const editRecord = event.target.closest('[data-edit-record]'); if (editRecord) { const [module,index] = editRecord.dataset.editRecord.split(':').map(Number); openEntry(module,state.modules[module][index],index); return; }
+        const deleteRecord = event.target.closest('[data-delete-record]'); if (deleteRecord) { const [module,index] = deleteRecord.dataset.deleteRecord.split(':').map(Number); deleteItem(module,index); return; }
+        if (event.target.closest('[data-refresh-news]')) { refreshNews(event.target.closest('[data-refresh-news]')); return; }
+        if (event.target.closest('[data-refresh-english]')) { refreshEnglish(event.target.closest('[data-refresh-english]')); return; }
+        const speakButton = event.target.closest('[data-speak]'); if (speakButton) { speak(speakButton.dataset.speak); return; }
+        if (event.target.closest('[data-complete-phrase]')) { state.growth.archives += 1; save(); stamp(event.target.closest('[data-complete-phrase]'),'跟读\n已归档'); showToast('今日句子练习已完成'); render(); return; }
+        if (event.target.closest('[data-generate-review]')) { generateDailyReview(); return; }
+        if (event.target.closest('[data-save-review]')) { document.querySelectorAll('[data-review]').forEach(node => { state.modules[9][Number(node.dataset.review)].meta = node.value.trim(); }); state.growth.archives += 1; save(); stamp(event.target.closest('[data-save-review]'),'复盘\n已归档'); showToast('今日复盘已保存'); render(); return; }
+        const agentPrompt = event.target.closest('[data-agent-prompt]'); if (agentPrompt) { openAgent(); answerAgent(agentPrompt.dataset.agentPrompt); return; }
+        const toastMessage = event.target.closest('[data-toast]'); if (toastMessage) { showToast(toastMessage.dataset.toast); return; }
+        if (event.target.closest('[data-sort]')) { state.tasks.sort((a,b) => Number(a.done) - Number(b.done)); save(); render(); showToast('已将未完成任务排在前面'); return; }
+        if (event.target.closest('[data-filter]')) { showToast(`当前有 ${state.tasks.filter(item => !item.done).length} 个未完成任务`); return; }
+        if (event.target.closest('[data-undo]')) { undoDelete(); return; }
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key !== 'Escape') return;
+        closeMobileNav(); closeEntry(); closeProfile(); closeClip(); closeDraft();
+      });
+      configureVoice();
+      const query = new URLSearchParams(location.search);
+      const initialTheme = query.get('style');
+      if (['archive','blueprint','ledger','editorial'].includes(initialTheme)) state.theme = initialTheme;
+      const initialModule = Number(query.get('module'));
+      if (Number.isInteger(initialModule) && initialModule >= 0 && initialModule < navItems.length) active = initialModule;
+      render();
+      refreshIcons();
+      if (query.get('skipWelcome') === '1') document.getElementById('welcome').remove();
+    })();
+  </script>
+</body>
+</html>
